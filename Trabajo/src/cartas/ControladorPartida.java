@@ -45,7 +45,7 @@ public class ControladorPartida {
 		for(int j=0;j<i;j++) {
 			for(int k=0;k<p;k++) {
 				c=this.mazo.robar();
-				this.players.get(k).receive(c);
+				this.players.get(k).recibirCarta(c);
 				if(c.equals(Baraja.cincoOro)) {
 					/*Si la carta repartida es el cinco de oros, se le da al 
 					atributo turno el indice del jugador (De la lista de jugadores)*/
@@ -60,13 +60,13 @@ public class ControladorPartida {
 		Carta c;
 		Jugador j=this.players.get(this.turno);
 		System.out.println("Turno del jugador "+j.getName());
-		c=j.chooseCard(this.mesa);
+		c=j.elegirCarta(this.mesa);
 		if(c==null) {
 			if(!this.mazo.mazoVacio()) {
 				System.out.println("Roba");
 				c=mazo.robar();
-				j.receive(c);
-				c=j.chooseCard(this.mesa);
+				j.recibirCarta(c);
+				c=j.elegirCarta(this.mesa);
 				if(c!=null) {
 					System.out.println("Coloca "+c+"\n");
 					this.mesa.place(c);

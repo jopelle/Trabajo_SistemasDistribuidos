@@ -8,7 +8,7 @@ public class Humano extends Jugador{
 	 public Humano(String n) {
 		 super(n);
 	 }
-	public Carta chooseCard(Mesa m) {
+	public Carta elegirCarta(Mesa m) {
 		//Pre: Receive a Mesa.
 		//Post: Returns a placeable card (Chosen by the player) from the hand and remove it. 
 		Carta c;
@@ -55,7 +55,7 @@ public class Humano extends Jugador{
 		}
 	}
 
-	public void receive(Carta c) {
+	public void recibirCarta(Carta c) {
 		//Pre: Receive a Carta.
 		//Post: Adds the given card to the player's hand. 
 		this.hand.add(c);

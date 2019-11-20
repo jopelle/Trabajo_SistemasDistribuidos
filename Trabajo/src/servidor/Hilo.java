@@ -2,15 +2,16 @@ package servidor;
 
 import java.net.Socket;
 
-import cartas.Jugador;
+import cartas.*;
 
 public class Hilo extends Thread{
 	
-	Socket socket;
-	Jugador jugador;
+	private Socket socket;
+	private Humano jugador;
 	
 	public Hilo(Socket s) {
 		this.socket=s;
+		this.jugador=new Humano("Jon");
 	}
 	
 	public void run() {
@@ -20,11 +21,11 @@ public class Hilo extends Thread{
 				//recibir del cliente un carta colocarla en la mesa
 	}
 	
-	public void enviarMesa() {
+	private void enviarMesa() {
 		//Servidor.getPartida().
 	}
 	
-	public void enviarCartas() {
+	private void enviarCartas() {
 		
 	}
 	
