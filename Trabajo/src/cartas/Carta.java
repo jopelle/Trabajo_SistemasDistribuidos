@@ -31,7 +31,7 @@ public class Carta {
 		else {
 			v=String.valueOf(this.valor);
 		}
-		return("["+v+" "+this.palo+"]");
+		return(v+" "+this.palo);
 	}
 	public boolean equals(Object c) {
 		if(c instanceof Carta) {

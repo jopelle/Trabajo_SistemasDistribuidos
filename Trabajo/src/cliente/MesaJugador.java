@@ -1,13 +1,14 @@
-package cartas;
+package cliente;
 import java.util.ArrayDeque;
+import cartas.*;
 
-public class Mesa {
+public class MesaJugador {
 	private java.util.Deque<Carta> oro;
 	private java.util.Deque<Carta> copa;
 	private java.util.Deque<Carta> espada;
 	private java.util.Deque<Carta> basto;
 	
-	public Mesa() {
+	public MesaJugador() {
 		//Pre: Constructor of Mesa.
 		//Post: Creates a Deque for each card suit.
 		this.oro=new ArrayDeque<Carta>();
@@ -15,9 +16,9 @@ public class Mesa {
 		this.espada=new ArrayDeque<Carta>();
 		this.basto=new ArrayDeque<Carta>();
 	}
-	public void place(Carta c) {
-		//Pre: Receives a Carta.
-		//Post: Places the given  card on the right place.
+	
+	//Colocar la carta en la mesa
+	public void colocar(Carta c) {
 		if(c.getPalo()==Palo.Oros) {
 			if(c.getValor()==5) {
 				this.oro.add(c);
@@ -63,9 +64,9 @@ public class Mesa {
 			}
 		}
 	}
-	public boolean placeable(Carta c) {
-		//Pre: Receives a Carta.
-		//Post: Returns true if the given card can be placed.
+	
+	//Decir si la carta puede colocarse en la mesa
+	public boolean colocable(Carta c) {
 		if(c.getValor()==5) {
 			return true;
 		}
@@ -116,10 +117,14 @@ public class Mesa {
 			}
 		}
 	}
+	
+	//String de la mesa
 	public String toString() {
 		return this.oro.toString()+"-"+this.copa.toString()+"-"+this.basto.toString()+"-"+this.espada.toString();
 	}
-	public void showMesa() {
+	
+	//Mostrar la mesa en la consola
+	public void mostrar() {
 		//Pre:
 		//Post: Shows the state of the table.
 		System.out.println("Mesa\n"+this.oro);

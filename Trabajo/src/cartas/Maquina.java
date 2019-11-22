@@ -6,7 +6,7 @@ public class Maquina extends Jugador{
 	 public Maquina(String n) {
 		 super(n);
 	 }
-	public Carta chooseCard(Mesa m) {
+	public Carta elegirCarta(Mesa m) {
 		//Pre: Receive a Mesa.
 		//Post: Returns a placeable card from the hand and remove it. 
 		//Se elige la primera carta que puede colocarse,la "estrategia inteligente" está en la forma de recibir las cartas
@@ -31,7 +31,7 @@ public class Maquina extends Jugador{
 			return null;
 		}
 	}
-	public void receive(Carta c) {
+	public void recibirCarta(Carta c) {
 		//Pre: Receive a Carta.
 		//Post: Adds the given card to the player's hand.
 		/*La "estrategia inteligente" consiste en, estas en ordenar de mayor

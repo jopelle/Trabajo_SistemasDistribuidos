@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class ControladorPartida {
 	private Mesa mesa;
-	private List<Jugador> players;
+	public List<Jugador> players;
 	private Baraja mazo;
 	private int turno;
 	private boolean gameOver;
@@ -18,7 +18,7 @@ public class ControladorPartida {
 			System.out.print("Nombre del jugador "+i+": ");
 			players.add(new Humano(entrada.next()));
 		}*/
-			players.add(new Humano("Jon"));
+		players.add(new Humano("Jon"));
 
 		for(int j=1;j<=m;j++) {
 			String n="Máquina"+j;
@@ -28,7 +28,11 @@ public class ControladorPartida {
 		mazo=new Baraja();
 		turno=0;
 		gameOver=false;
+		this.repartir();
+
+		//this.jugada();
 	}
+	
 	public void repartir() {
 		//Pre:
 		//Post: Shuffles the deck, deals the cards among the players and assigns the initial turn.
@@ -54,12 +58,14 @@ public class ControladorPartida {
 			}
 		}
 	}
-	public void move() {
-		//Pre:
-		//Post: Makes a play. Places a card chosen by the player on the table.
+	public void jugada() {
 		Carta c;
+		//Se asigna turno al jugador
 		Jugador j=this.players.get(this.turno);
-		System.out.println("Turno del jugador "+j.getName());
+		j.turno=true;
+		
+		/*System.out.println("Turno del jugador "+j.getName());
+		
 		c=j.elegirCarta(this.mesa);
 		if(c==null) {
 			if(!this.mazo.mazoVacio()) {
@@ -79,8 +85,8 @@ public class ControladorPartida {
 		else {
 			System.out.println("Coloca "+c+"\n");
 			this.mesa.place(c);
-		}
-		if(j.cardsInHand()==0) {
+		}*/
+		/*if(j.cardsInHand()==0) {
 			this.gameOver=true;
 		}
 		else {
@@ -90,7 +96,8 @@ public class ControladorPartida {
 			else {
 				this.turno++;
 			}
-		}
+			j.turno=false;
+		}*/
 	}
 	public boolean getGameOver() {
 		//Pre:
@@ -150,11 +157,19 @@ public class ControladorPartida {
 		}
 	}
 	
-	public Mesa getMesa() {
-		return this.mesa;
+	public String getStringMesa() {
+		return this.mesa.toString();
 	}
 	
-	public Baraja getMazo() {
-		return this.mazo;
+	public String getStringMazo() {
+		return this.mazo.toString();
 	}
+	
+	public String getStringMano() {
+		return this.players.get(this.turno).handToString();
+	}
+	
+	public void colocarCarta(Carta c) {
+		this.mesa.place(c);
+	} 
 }

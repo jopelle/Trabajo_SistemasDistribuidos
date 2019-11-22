@@ -7,24 +7,30 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cartas.ControladorPartida;
+import cartas.Jugador;
 
 public class Servidor{
 	
-	public static int njugadores=0;
-	private static ControladorPartida partida= new ControladorPartida(1,1);
+	protected static int njugadores=0;
+	protected static ControladorPartida partida;
 	
 	
 	public static void main(String[] args) {
 		
 		ExecutorService pool=Executors.newFixedThreadPool(4);
-		ControladorPartida partida= new ControladorPartida(1,1);
+		partida= new ControladorPartida(1,1);
 		
 		try (ServerSocket server=new ServerSocket(6666);){
 			//while(true) {
 				try {
 					Socket cliente=server.accept();
-					Hilo hilo=new Hilo(cliente);
+					Hilo hilo=new Hilo(cliente,partida.players.get(0));
 					hilo.start();
+					
+					/*partida.repartir();
+					while(partida.getGameOver()==false){
+						partida.jugada();
+					}*/
 					//pool.execute(new Hilo(cliente));		
 					
 					
@@ -37,8 +43,4 @@ public class Servidor{
 			pool.shutdown();
 		}
 	}
-	
-	static public ControladorPartida getPartida() {
-		return partida;
-	}	
 }
