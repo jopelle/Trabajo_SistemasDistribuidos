@@ -1,25 +1,24 @@
-package cliente;
+package scartas;
 import java.util.ArrayDeque;
-import cartas.*;
 
-public class MesaJugador {
-	private java.util.Deque<Carta> oro;
-	private java.util.Deque<Carta> copa;
-	private java.util.Deque<Carta> espada;
-	private java.util.Deque<Carta> basto;
+public class SMesa {
+	private java.util.Deque<SCarta> oro;
+	private java.util.Deque<SCarta> copa;
+	private java.util.Deque<SCarta> espada;
+	private java.util.Deque<SCarta> basto;
 	
-	public MesaJugador() {
+	public SMesa() {
 		//Pre: Constructor of Mesa.
 		//Post: Creates a Deque for each card suit.
-		this.oro=new ArrayDeque<Carta>();
-		this.copa=new ArrayDeque<Carta>();
-		this.espada=new ArrayDeque<Carta>();
-		this.basto=new ArrayDeque<Carta>();
+		this.oro=new ArrayDeque<SCarta>();
+		this.copa=new ArrayDeque<SCarta>();
+		this.espada=new ArrayDeque<SCarta>();
+		this.basto=new ArrayDeque<SCarta>();
 	}
-	
-	//Colocar la carta en la mesa
-	public void colocar(Carta c) {
-		if(c.getPalo()==Palo.Oros) {
+	public void place(SCarta c) {
+		//Pre: Receives a Carta.
+		//Post: Places the given  card on the right place.
+		if(c.getPalo()==SPalo.Oros) {
 			if(c.getValor()==5) {
 				this.oro.add(c);
 			}
@@ -30,7 +29,7 @@ public class MesaJugador {
 				this.oro.addFirst(c);
 			}
 		}
-		if(c.getPalo()==Palo.Bastos) {
+		if(c.getPalo()==SPalo.Bastos) {
 			if(c.getValor()==5) {
 				this.basto.add(c);
 			}
@@ -41,7 +40,7 @@ public class MesaJugador {
 				this.basto.addFirst(c);
 			}
 		}
-		if(c.getPalo()==Palo.Espadas) {
+		if(c.getPalo()==SPalo.Espadas) {
 			if(c.getValor()==5) {
 				this.espada.add(c);
 			}
@@ -52,7 +51,7 @@ public class MesaJugador {
 				this.espada.addFirst(c);
 			}
 		}
-		if(c.getPalo()==Palo.Copas) {
+		if(c.getPalo()==SPalo.Copas) {
 			if(c.getValor()==5) {
 				this.copa.add(c);
 			}
@@ -65,13 +64,14 @@ public class MesaJugador {
 		}
 	}
 	
-	//Decir si la carta puede colocarse en la mesa
-	public boolean colocable(Carta c) {
+	public boolean placeable(SCarta c) {
+		//Pre: Receives a Carta.
+		//Post: Returns true if the given card can be placed.
 		if(c.getValor()==5) {
 			return true;
 		}
 		else{
-			if(c.getPalo().equals(Palo.Oros)) {
+			if(c.getPalo().equals(SPalo.Oros)) {
 				if(this.oro.isEmpty()) {
 					return false;
 				}
@@ -82,7 +82,7 @@ public class MesaJugador {
 					return false;
 				}
 			}
-			else if(c.getPalo().equals(Palo.Bastos)) {
+			else if(c.getPalo().equals(SPalo.Bastos)) {
 				if(this.basto.isEmpty()) {
 					return false;
 				}
@@ -93,7 +93,7 @@ public class MesaJugador {
 					return false;
 				}
 			}
-			else if(c.getPalo().equals(Palo.Copas)) {
+			else if(c.getPalo().equals(SPalo.Copas)) {
 				if(this.copa.isEmpty()) {
 					return false;
 				}
@@ -118,13 +118,11 @@ public class MesaJugador {
 		}
 	}
 	
-	//String de la mesa
 	public String toString() {
 		return this.oro.toString()+"-"+this.copa.toString()+"-"+this.basto.toString()+"-"+this.espada.toString();
 	}
-	
-	//Mostrar la mesa en la consola
-	public void mostrar() {
+
+	public void showMesa() {
 		//Pre:
 		//Post: Shows the state of the table.
 		System.out.println("Mesa\n"+this.oro);

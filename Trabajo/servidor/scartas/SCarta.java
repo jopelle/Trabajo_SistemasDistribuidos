@@ -1,11 +1,11 @@
-package cartas;
+package scartas;
 
-public class Carta {
-	private Palo palo;
+public class SCarta {
+	private SPalo sPalo;
 	private int valor;
 	
-	public Carta(Palo p,int v) {
-		this.palo=p;
+	public SCarta(SPalo p,int v) {
+		this.sPalo=p;
 		this.valor=v;
 	}
 	
@@ -13,8 +13,8 @@ public class Carta {
 		return this.valor;
 	}
 	
-	public Palo getPalo() {
-		return this.palo;
+	public SPalo getPalo() {
+		return this.sPalo;
 	}
 	
 	public String toString() {
@@ -31,12 +31,13 @@ public class Carta {
 		else {
 			v=String.valueOf(this.valor);
 		}
-		return(v+" "+this.palo);
+		return(v+" "+this.sPalo);
 	}
+	
 	public boolean equals(Object c) {
-		if(c instanceof Carta) {
-			Carta carta=(Carta) c;
-			if(this.palo==carta.getPalo() && this.valor==carta.getValor()){
+		if(c instanceof SCarta) {
+			SCarta sCarta=(SCarta) c;
+			if(this.sPalo==sCarta.getPalo() && this.valor==sCarta.getValor()){
 				return true;
 			}
 			else {

@@ -1,4 +1,4 @@
-package servidor;
+package principal;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,12 +15,12 @@ import scartas.SPalo;
 public class Hilo extends Thread{
 	
 	private Socket socket;
-	private Humano jugador;
+	private SJugador jugador;
 	
 	public Hilo(Socket s,SJugador j) {
 		this.socket=s;
-		this.jugador=(Humano)j;
-		this.jugador.turno=true;
+		this.jugador=j;
+		//this.jugador.turno=true;
 	}
 	public void run() {
 		try(BufferedWriter out= new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -35,7 +35,7 @@ public class Hilo extends Thread{
 			//repetir hasta que se acebe la partida
 			while(true) {
 				//hacer si es su turno
-				if(this.jugador.turno) {
+				if(/*this.jugador.turno*/true) {
 					//enviar al cliente el estado de la mesa
 					out.write(Servidor.partida.getStringMesa()+"\r\n");
 					out.flush();

@@ -1,19 +1,18 @@
 package cartas;
-import cartas.*;
+import java.util.List;
 
-abstract public class Jugador {
-	public boolean turno;
-	protected java.util.List<Carta> hand;
-	protected String name;
-	protected int handValue;
+import cartas.Carta;
+import cartas.Mesa;
+
+public class Jugador {
+	private List<Carta> hand;
+	private String name;
 	
 	public Jugador(String n) {
 		//Pre: Constructor of Jugador. Receives a String.
 		//Post: Creates a Jugador with the given parameter(Name).
 		this.name=n;
 		this.hand=new java.util.ArrayList<Carta>();
-		this.handValue=0;
-		this.turno=false;
 	}
 	
 	public int cardsInHand() {
@@ -34,12 +33,6 @@ abstract public class Jugador {
 		return ("Jugador: "+this.name+"\nhand: "+this.hand);
 	}
 	
-	public int getHandValue() {
-		//Pre:
-		//Post: Returns the sum of the values of the player's hand.
-		return this.handValue;
-	}
-	
 	public String handToString(){
 		return this.hand.toString();
 	}
@@ -48,7 +41,11 @@ abstract public class Jugador {
 		this.hand.remove(c);
 	}
 	
-	abstract public Carta elegirCarta(Mesa m);
+	public Carta elegirCarta(Mesa m) {
+		return null;
+	}
  
-	abstract public void recibirCarta(Carta c);
+	public void recibirCarta(Carta c) {
+		this.hand.add(c);
+	}
 }

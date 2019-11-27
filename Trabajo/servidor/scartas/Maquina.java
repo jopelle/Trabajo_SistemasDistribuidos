@@ -1,20 +1,19 @@
-package cartas;
+package scartas;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Maquina extends Jugador{
+public class Maquina extends SJugador{
 	 public Maquina(String n) {
 		 super(n);
 	 }
-	public Carta elegirCarta(Mesa m) {
+	public SCarta elegirCarta(SMesa m) {
 		//Pre: Receive a Mesa.
 		//Post: Returns a placeable card from the hand and remove it. 
 		//Se elige la primera carta que puede colocarse,la "estrategia inteligente" está en la forma de recibir las cartas
-		Carta c;
+		SCarta c;
 		if(this.hand.contains(Baraja.cincoOro)) {
 			System.out.println("El jugador "+this.name+" empieza con el "+Baraja.cincoOro);
 			this.hand.remove(Baraja.cincoOro);
-			this.handValue=this.handValue-5;
 			return Baraja.cincoOro;
 		}
 		else {
@@ -23,7 +22,6 @@ public class Maquina extends Jugador{
 				c=this.hand.get(i);
 				if(m.placeable(c)) {
 					this.hand.remove(c);
-					this.handValue=this.handValue-c.getValor();
 					return c;
 				}
 			}
@@ -31,13 +29,13 @@ public class Maquina extends Jugador{
 			return null;
 		}
 	}
-	public void recibirCarta(Carta c) {
+	public void recibirCarta(SCarta c) {
 		//Pre: Receive a Carta.
 		//Post: Adds the given card to the player's hand.
 		/*La "estrategia inteligente" consiste en, estas en ordenar de mayor
 		a menor las cartas por valor, y además colocar los cincos al final 
 		para mantenerlos el mayor tiempo posible*/
-		List<Carta> cincos=new ArrayList<Carta>();
+		List<SCarta> cincos=new ArrayList<SCarta>();
 		int i=0;
 		if(this.cardsInHand()==0) {
 			this.hand.add(c);
@@ -64,6 +62,5 @@ public class Maquina extends Jugador{
 				this.hand.add(cincos.get(j));
 			}
 		}
-		this.handValue=this.handValue+c.getValor();
 	}
 }

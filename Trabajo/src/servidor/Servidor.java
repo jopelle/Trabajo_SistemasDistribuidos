@@ -6,8 +6,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cartas.ControladorPartida;
-import cartas.Jugador;
+import scartas.ControladorPartida;
+import scartas.SJugador;
 
 public class Servidor{
 	

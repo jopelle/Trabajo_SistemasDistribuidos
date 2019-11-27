@@ -1,6 +1,9 @@
 package cartas;
 import java.util.ArrayDeque;
 
+import cartas.Carta;
+import cartas.Palo;
+
 public class Mesa {
 	private java.util.Deque<Carta> oro;
 	private java.util.Deque<Carta> copa;
@@ -63,6 +66,7 @@ public class Mesa {
 			}
 		}
 	}
+	
 	public boolean placeable(Carta c) {
 		//Pre: Receives a Carta.
 		//Post: Returns true if the given card can be placed.
@@ -116,9 +120,7 @@ public class Mesa {
 			}
 		}
 	}
-	public String toString() {
-		return this.oro.toString()+"-"+this.copa.toString()+"-"+this.basto.toString()+"-"+this.espada.toString();
-	}
+
 	public void showMesa() {
 		//Pre:
 		//Post: Shows the state of the table.
