@@ -7,9 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import principal.SJugador;
 import scartas.Humano;
 import scartas.SCarta;
-import scartas.SJugador;
 import scartas.SPalo;
 
 public class Hilo extends Thread{

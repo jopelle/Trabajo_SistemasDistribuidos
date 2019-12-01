@@ -5,7 +5,8 @@ import cartas.Carta;
 import cartas.Mesa;
 
 public class Jugador {
-	private List<Carta> hand;
+	//public temporalmente
+	public List<Carta> hand;
 	private String name;
 	
 	public Jugador(String n) {
@@ -43,6 +44,7 @@ public class Jugador {
 	
 	public Carta elegirCarta(Mesa m) {
 		return null;
+		//eliminarla
 	}
  
 	public void recibirCarta(Carta c) {

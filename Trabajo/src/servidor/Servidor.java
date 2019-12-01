@@ -6,8 +6,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import principal.SJugador;
 import scartas.ControladorPartida;
-import scartas.SJugador;
 
 public class Servidor{
 	
@@ -18,6 +18,7 @@ public class Servidor{
 	public static void main(String[] args) {
 		
 		ExecutorService pool=Executors.newFixedThreadPool(4);
+		pool.
 		partida= new ControladorPartida(1,1);
 		
 		try (ServerSocket server=new ServerSocket(6666);){

@@ -1,14 +1,18 @@
-package scartas;
+package principal;
+
+import scartas.SCarta;
 
 public class SJugador {
 	protected java.util.List<SCarta> hand;
 	protected String name;
+	protected boolean suTurno;
 	
 	public SJugador(String n) {
 		//Pre: Constructor of Jugador. Receives a String.
 		//Post: Creates a Jugador with the given parameter(Name).
 		this.name=n;
 		this.hand=new java.util.ArrayList<SCarta>();
+		this.suTurno=false;
 	}
 	
 	public int cardsInHand() {
@@ -34,11 +38,4 @@ public class SJugador {
 		//Post: Adds the given card to the player's hand. 
 		this.hand.add(c);
 	}
-	
-	public SCarta elegirCarta(SMesa m) {
-		//enviar mesa al cliente
-		
-		return null;
-	}
-
 }

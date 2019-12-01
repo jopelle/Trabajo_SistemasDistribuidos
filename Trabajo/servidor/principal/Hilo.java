@@ -6,36 +6,62 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 
-import scartas.Humano;
 import scartas.SCarta;
-import scartas.SJugador;
 import scartas.SPalo;
 
 public class Hilo extends Thread{
 	
 	private Socket socket;
 	private SJugador jugador;
+	private CountDownLatch count;
+	private int turno;
 	
-	public Hilo(Socket s,SJugador j) {
+	public Hilo(Socket s,SJugador j, CountDownLatch c, int t) {
 		this.socket=s;
 		this.jugador=j;
-		//this.jugador.turno=true;
+		this.count=c;
+		this.turno=t;
 	}
 	public void run() {
 		try(BufferedWriter out= new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
 			BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));){
 			String stringCarta;
 			SCarta cartaAColocar;
-			
+						
 			//se envian las cartas al cliente
 			out.write(this.jugador.handToString()+"\r\n");
 			out.flush();
+			System.out.println(this.turno);
+			//SCarta c=this.traducirCarta(in.readLine());
+			//System.out.println(c);
+			//Servidor.partida.colocarCarta(c);
+			this.count.countDown();
+			this.count.await();
 			
+			while(Servidor.partida.getGameOver()==false) {
+				if(this.turno==Servidor.partida.getTurno()) {
+					Servidor.semaforo.acquire();
+					
+					System.out.println(this.jugador.getName());
+					
+					if(this.turno==Servidor.partida.players.size()-1) {
+						Servidor.partida.turno=0;
+					}
+					else {
+						Servidor.partida.turno++;
+					}
+					Servidor.semaforo.release();
+				}
+			}
+			
+			/*
 			//repetir hasta que se acebe la partida
 			while(true) {
 				//hacer si es su turno
-				if(/*this.jugador.turno*/true) {
+				if(Servidor.partida.getTurno()==this.turno) {
 					//enviar al cliente el estado de la mesa
 					out.write(Servidor.partida.getStringMesa()+"\r\n");
 					out.flush();
@@ -53,18 +79,18 @@ public class Hilo extends Thread{
 					}
 					//colocar la carta en la mesa del servidor
 					Servidor.partida.colocarCarta(cartaAColocar);
-
-					//eliminar la carta de la mano del jugador
-					this.jugador.eliminarCartaMano(cartaAColocar);
-
-					//pasar turno
-					this.jugador.turno=false;
 				}
-			}
+			}*/
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+	}
+	
+	public void setCountDown(CountDownLatch c) {
+		this.count=c;
 	}
 	
 	private SCarta traducirCarta(String cadena){
@@ -104,5 +130,12 @@ public class Hilo extends Thread{
 		
 		return sCarta;
 	}
-
+	
+	public void esperar() {
+		
+	}
+	
+	public void jugar() {
+		
+	}
 }

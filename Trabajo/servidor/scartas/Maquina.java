@@ -2,6 +2,8 @@ package scartas;
 import java.util.ArrayList;
 import java.util.List;
 
+import principal.SJugador;
+
 public class Maquina extends SJugador{
 	 public Maquina(String n) {
 		 super(n);

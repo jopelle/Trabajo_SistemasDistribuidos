@@ -8,7 +8,7 @@ public class ControladorPartida {
 	private SMesa mesa;
 	public List<SJugador> players;
 	private Baraja mazo;
-	private int turno;
+	public int turno;
 	private boolean gameOver;
 	
 	public ControladorPartida() {
@@ -17,6 +17,13 @@ public class ControladorPartida {
 		this.mazo=new Baraja();
 		this.turno=0;
 		this.gameOver=false;
+		
+		this.players.add(new SJugador("a"));
+		this.players.add(new SJugador("b"));
+		this.players.add(new SJugador("c"));
+		this.players.add(new SJugador("d"));
+
+		
 		this.repartir();
 	}
 	
@@ -62,8 +69,16 @@ public class ControladorPartida {
 		}
 	}
 	
+	public int getTurno() {
+		return this.turno;
+	}
+	
 	public String getStringMesa() {
 		return this.mesa.toString();
+	}
+	
+	public void show() {
+		this.mesa.showMesa();
 	}
 	
 	public String getStringMazo() {
