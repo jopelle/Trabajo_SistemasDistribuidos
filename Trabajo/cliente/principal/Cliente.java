@@ -14,11 +14,13 @@ public class Cliente {
 			
 			cliente.recibirMano();
 			System.out.println(cliente.getName());
-			//cliente.enviarCarta();
-			/*while(continua==true) {
+			
+			
+			
+			while(continua==true) {
 				cliente.recibirMesa();
 				cliente.enviarCarta();
-			}*/
+			}
 			
 		}catch(IOException e) {
 			e.printStackTrace();

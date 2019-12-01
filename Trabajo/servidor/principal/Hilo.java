@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
 
 import scartas.SCarta;
 import scartas.SPalo;
@@ -30,6 +30,7 @@ public class Hilo extends Thread{
 			BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));){
 			String stringCarta;
 			SCarta cartaAColocar;
+			Scanner inte=new Scanner(System.in);
 						
 			//se envian las cartas al cliente
 			out.write(this.jugador.handToString()+"\r\n");
@@ -43,17 +44,36 @@ public class Hilo extends Thread{
 			
 			while(Servidor.partida.getGameOver()==false) {
 				if(this.turno==Servidor.partida.getTurno()) {
-					Servidor.semaforo.acquire();
 					
 					System.out.println(this.jugador.getName());
+
+					//Envio la mesa
+					//out.write(Servidor.partida.getStringMesa()+"\r\n");
+					//out.flush();
 					
+					//Robar o colocar
+					String s=in.readLine();
+					if(s.equals("robar")) {
+						SCarta robada=Servidor.partida.robar();
+						this.jugador.recibirCarta(robada);
+						out.write(robada.toString());
+					}
+					
+					//Colocar, si el jugador tiene para colocar
+					s=in.readLine();
+					if(s.equals("ok")) {
+						SCarta c=this.traducirCarta(in.readLine());
+						Servidor.partida.colocarCarta(c);
+					}
+					
+					//Se acaba la partida si no le quedan cartas al jugador
+					//Se pasa el turno en caso contrario
 					if(this.turno==Servidor.partida.players.size()-1) {
 						Servidor.partida.turno=0;
 					}
 					else {
 						Servidor.partida.turno++;
 					}
-					Servidor.semaforo.release();
 				}
 			}
 			

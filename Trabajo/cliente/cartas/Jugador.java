@@ -6,7 +6,7 @@ import cartas.Mesa;
 
 public class Jugador {
 	//public temporalmente
-	public List<Carta> hand;
+	private List<Carta> hand;
 	private String name;
 	
 	public Jugador(String n) {
@@ -40,11 +40,6 @@ public class Jugador {
 	
 	public void eliminarCartaMano(Carta c) {
 		this.hand.remove(c);
-	}
-	
-	public Carta elegirCarta(Mesa m) {
-		return null;
-		//eliminarla
 	}
  
 	public void recibirCarta(Carta c) {

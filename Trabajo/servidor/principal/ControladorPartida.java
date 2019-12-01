@@ -92,4 +92,8 @@ public class ControladorPartida {
 	public void colocarCarta(SCarta c) {
 		this.mesa.place(c);
 	} 
+	
+	public SCarta robar() {
+		return this.mazo.drawCard();
+	}
 }

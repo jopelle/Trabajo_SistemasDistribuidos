@@ -34,6 +34,7 @@ public class Servidor {
 			while(partida.getGameOver()==false) {				
 
 			}
+			
 			System.out.println(partida.getStringMazo());
 			//partida.show();
 		}catch(IOException e) {e.printStackTrace();

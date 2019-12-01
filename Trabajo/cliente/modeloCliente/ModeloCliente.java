@@ -17,7 +17,8 @@ import cartas.Palo;
 public class ModeloCliente {
 	
 	private Mesa mesa;
-	private Jugador jugador;
+	private List<Carta> mano;
+	private String nombre;
 	private Socket socket;
 	private BufferedReader in;
 	private BufferedWriter out;
@@ -25,7 +26,7 @@ public class ModeloCliente {
 	
 	public ModeloCliente(String n,Socket s) {
 		this.mesa=new Mesa();
-		this.jugador=new Jugador(n);
+		this.nombre=n;
 		this.socket=s;
 		
 		try{
@@ -58,18 +59,26 @@ public class ModeloCliente {
 			List<Carta> cartas=this.traducirCartas(s);
 			
 			for(int i=0;i<cartas.size();i++) {
-				this.jugador.recibirCarta(cartas.get(i));
+				this.mano.add(cartas.get(i));
 			}
-			System.out.println(this.jugador.handToString());
+			System.out.println(this.mano.toString());
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void enviarCarta() {
-		System.out.println("Elige una carta: \r\n");
-		System.out.println(this.jugador.handToString());
-		//Carta c=this.jugador.elegirCarta(this.mesa);
+		System.out.println("Tu mano: \r\n");
+		System.out.print(this.mano.toString());
+		
+		List<Carta> colocables=new ArrayList<>();
+		for(int i=0;i<this.mano.size();i++) {
+			if(this.mesa.placeable(this.mano.get(i))) {
+				colocables.add(this.mano.get(i));
+			}
+		}
+		/*
+		Carta c=this.jugador.elegirCarta(this.mesa);
 		Carta c=this.jugador.hand.get(this.teclado.nextInt());
 		try {
 			this.out.write(c.toString()+"\r\n");
@@ -77,19 +86,24 @@ public class ModeloCliente {
 			this.jugador.eliminarCartaMano(c);
 		}catch(IOException e) {
 			e.printStackTrace();
+		}*/
+	}
+	
+	public boolean continua() {
+		try {
+			return in.readLine().equals("continua");
+		}catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	public String getName() {
-		return this.jugador.getName();
+		return this.nombre;
 	}
 	
 	public Mesa getMesa() {
 		return this.mesa;
-	}
-	
-	public Jugador getMano(){
-		return this.jugador;
 	}
 	
 	private List<Carta> traducirCartas(String s){
