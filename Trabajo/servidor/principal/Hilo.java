@@ -30,7 +30,6 @@ public class Hilo extends Thread{
 			BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));){
 			String stringCarta;
 			SCarta cartaAColocar;
-			Scanner inte=new Scanner(System.in);
 						
 			//se envian las cartas al cliente
 			out.write(this.jugador.handToString()+"\r\n");
@@ -57,6 +56,7 @@ public class Hilo extends Thread{
 					//Robar o coloca
 					String s;
 					do{s=in.readLine();} while(s==null);
+					System.out.println(s);
 					if(s.equals("robar")) {
 						if(Servidor.partida.mazoVacio()){
 							out.write("vacio\r\n");

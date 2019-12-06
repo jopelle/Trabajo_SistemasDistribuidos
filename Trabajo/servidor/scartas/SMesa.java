@@ -119,7 +119,7 @@ public class SMesa {
 	}
 	
 	public String toString() {
-		return this.oro.toString()+this.copa.toString()+this.basto.toString()+this.espada.toString();
+		return this.oro.toString()+"-"+this.copa.toString()+"-"+this.basto.toString()+"-"+this.espada.toString();
 	}
 
 	public void showMesa() {

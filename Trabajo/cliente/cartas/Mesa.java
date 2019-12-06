@@ -21,48 +21,57 @@ public class Mesa {
 	public void place(Carta c) {
 		//Pre: Receives a Carta.
 		//Post: Places the given  card on the right place.
-		if(c.getPalo()==Palo.Oros) {
-			if(c.getValor()==5) {
-				this.oro.add(c);
+		boolean yaEsta;
+		System.out.println(c);
+		if(this.oro.contains(c)) {yaEsta=true;}
+		else if(this.copa.contains(c)) {yaEsta=true;}
+		else if(this.espada.contains(c)) {yaEsta=true;}
+		else if(this.basto.contains(c)) {yaEsta=true;}
+		else {yaEsta=false;}
+		if(yaEsta==false) {
+			if(c.getPalo()==Palo.Oros) {
+				if(c.getValor()==5) {
+					this.oro.add(c);
+				}
+				else if(c.getValor()>this.oro.getLast().getValor()) {
+					this.oro.addLast(c);
+				}
+				else {
+					this.oro.addFirst(c);
+				}
 			}
-			else if(c.getValor()>this.oro.getLast().getValor()) {
-				this.oro.addLast(c);
+			if(c.getPalo()==Palo.Bastos) {
+				if(c.getValor()==5) {
+					this.basto.add(c);
+				}
+				else if(c.getValor()>this.basto.getLast().getValor()) {
+					this.basto.addLast(c);
+				}
+				else {
+					this.basto.addFirst(c);
+				}
 			}
-			else {
-				this.oro.addFirst(c);
+			if(c.getPalo()==Palo.Espadas) {
+				if(c.getValor()==5) {
+					this.espada.add(c);
+				}
+				else if(c.getValor()>this.espada.getLast().getValor()) {
+						this.espada.addLast(c);
+				}
+				else {
+					this.espada.addFirst(c);
+				}
 			}
-		}
-		if(c.getPalo()==Palo.Bastos) {
-			if(c.getValor()==5) {
-				this.basto.add(c);
-			}
-			else if(c.getValor()>this.basto.getLast().getValor()) {
-				this.basto.addLast(c);
-			}
-			else {
-				this.basto.addFirst(c);
-			}
-		}
-		if(c.getPalo()==Palo.Espadas) {
-			if(c.getValor()==5) {
-				this.espada.add(c);
-			}
-			else if(c.getValor()>this.espada.getLast().getValor()) {
-					this.espada.addLast(c);
-			}
-			else {
-				this.espada.addFirst(c);
-			}
-		}
-		if(c.getPalo()==Palo.Copas) {
-			if(c.getValor()==5) {
-				this.copa.add(c);
-			}
-			else if(c.getValor()>this.copa.getLast().getValor()) {
-				this.copa.addLast(c);
-			}
-			else {
-				this.copa.addFirst(c);
+			if(c.getPalo()==Palo.Copas) {
+				if(c.getValor()==5) {
+					this.copa.add(c);
+				}
+				else if(c.getValor()>this.copa.getLast().getValor()) {
+					this.copa.addLast(c);
+				}
+				else {
+					this.copa.addFirst(c);
+				}
 			}
 		}
 	}

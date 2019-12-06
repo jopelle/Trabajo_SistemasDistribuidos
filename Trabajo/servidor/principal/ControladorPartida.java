@@ -35,7 +35,7 @@ public class ControladorPartida {
 		int i;
 		int p=this.players.size();
 		if(p<=4) {
-			i=10;
+			i=40;
 		}
 		else {
 			i=40/p;

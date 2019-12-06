@@ -42,7 +42,10 @@ public class ModeloCliente {
 	public void recibirMesa() {
 		try{
 			String s=this.in.readLine();
+			System.out.println(s);
 			List<Carta> cartas=this.traducirCartas(s);
+			System.out.println(cartas);
+
 			if(cartas!=null) {
 				for(int i=0;i<cartas.size();i++) {
 					this.mesa.place(cartas.get(i));
@@ -58,15 +61,12 @@ public class ModeloCliente {
 	public void recibirMano() {
 		try {
 			String s=in.readLine();
-			System.out.println(s);
 
 			List<Carta> cartas=this.traducirCartas(s);
-			System.out.println(cartas.size());
 			
 			for(int i=0;i<cartas.size();i++) {
 				this.mano.add(cartas.get(i));
 			}
-			System.out.println(this.mano.toString());
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -154,53 +154,65 @@ public class ModeloCliente {
 	private List<Carta> traducirCartas(String s){
 		List<Carta> listaCartas=new ArrayList<>();
 		
-		s=s.replace("[", "");
-		s=s.replace("]", "");
+		String[]palos=s.split("-");
 		
-		String[]cartas=s.split(",");
-		String[]stringCarta;
-		
-		Carta carta;
-		int valor;
-		
-		for(int i=0;i<cartas.length;i++) {
-			if(i!=0){
-				cartas[i]=cartas[i].replaceFirst(" ", "");
+		for(int j=0;j<palos.length;j++) {
+
+			palos[j]=palos[j].replace("[", "");
+			palos[j]=palos[j].replace("]", "");
+						
+			if(!palos[j].equals("")) {
+				System.out.println(palos[j]);
+
+				String[]cartas=palos[j].split(",");
+								
+				String[]stringCarta;
+
+				Carta carta;
+				int valor;
+				
+				for(int i=0;i<cartas.length;i++) {
+
+					if(i!=0){
+						cartas[i]=cartas[i].replaceFirst(" ", "");
+					}
+						
+					stringCarta=cartas[i].split(" ");
+					
+					if(stringCarta[0].equals("S")) {
+						valor=8;
+					}
+					else if(stringCarta[0].equals("C")) {
+						valor=9;
+					}
+					else if(stringCarta[0].equals("R")) {
+						valor=10;
+					}
+					else {
+						valor=Integer.valueOf(stringCarta[0]);
+					}
+					
+					if(stringCarta[1].equals("Oros")) {
+						carta=new Carta(Palo.Oros,valor);
+					}
+					else if(stringCarta[1].equals("Espadas")) {
+						carta=new Carta(Palo.Espadas,valor);
+					}
+					else if(stringCarta[1].equals("Bastos")) {
+						carta=new Carta(Palo.Bastos,valor);
+					}
+					else {
+						carta=new Carta(Palo.Copas,valor);
+					}
+					listaCartas.add(carta);
+				}
 			}
-			stringCarta=cartas[i].split(" ");
-			
-			if(cartas[0].equals("")) {
-				return null;
-			}
-			
-			if(stringCarta[0].equals("S")) {
-				valor=8;
-			}
-			else if(stringCarta[0].equals("C")) {
-				valor=9;
-			}
-			else if(stringCarta[0].equals("R")) {
-				valor=10;
-			}
-			else {
-				valor=Integer.valueOf(stringCarta[0]);
-			}
-			
-			if(stringCarta[1].equals("Oros")) {
-				carta=new Carta(Palo.Oros,valor);
-			}
-			else if(stringCarta[1].equals("Espadas")) {
-				carta=new Carta(Palo.Espadas,valor);
-			}
-			else if(stringCarta[1].equals("Bastos")) {
-				carta=new Carta(Palo.Bastos,valor);
-			}
-			else {
-				carta=new Carta(Palo.Copas,valor);
-			}
-			
-			listaCartas.add(carta);
 		}
-		return listaCartas;
+		if(listaCartas.size()==0) {
+			return null;
+		}
+		else {
+			return listaCartas;
+		}
 	}
 }
