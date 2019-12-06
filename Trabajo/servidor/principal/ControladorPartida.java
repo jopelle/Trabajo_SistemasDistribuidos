@@ -19,9 +19,9 @@ public class ControladorPartida {
 		this.gameOver=false;
 		
 		this.players.add(new SJugador("a"));
-		this.players.add(new SJugador("b"));
+	/*	this.players.add(new SJugador("b"));
 		this.players.add(new SJugador("c"));
-		this.players.add(new SJugador("d"));
+		this.players.add(new SJugador("d"));*/
 
 		
 		this.repartir();
@@ -73,16 +73,20 @@ public class ControladorPartida {
 		return this.turno;
 	}
 	
+	public SMesa getMesa() {
+		return this.mesa;
+	} 
+	
 	public String getStringMesa() {
 		return this.mesa.toString();
 	}
 	
-	public void show() {
-		this.mesa.showMesa();
+	public boolean mazoVacio() {
+		return this.mazo.isEmpty();
 	}
 	
-	public String getStringMazo() {
-		return this.mazo.toString();
+	public void show() {
+		this.mesa.showMesa();
 	}
 	
 	public String getStringMano() {

@@ -35,35 +35,47 @@ public class Hilo extends Thread{
 			//se envian las cartas al cliente
 			out.write(this.jugador.handToString()+"\r\n");
 			out.flush();
+			System.out.println(this.jugador.handToString());
+
 			System.out.println(this.turno);
 			//SCarta c=this.traducirCarta(in.readLine());
 			//System.out.println(c);
 			//Servidor.partida.colocarCarta(c);
 			this.count.countDown();
-			this.count.await();
+			//this.count.await();
 			
 			while(Servidor.partida.getGameOver()==false) {
 				if(this.turno==Servidor.partida.getTurno()) {
 					
 					System.out.println(this.jugador.getName());
 
-					//Envio la mesa
-					//out.write(Servidor.partida.getStringMesa()+"\r\n");
-					//out.flush();
+					//Envia la mesa
+					System.out.println(Servidor.partida.getStringMesa());
+					out.write(Servidor.partida.getStringMesa()+"\r\n");
+					out.flush();
 					
-					//Robar o colocar
-					String s=in.readLine();
+					//Robar o coloca
+					String s;
+					do{s=in.readLine();} while(s==null);
 					if(s.equals("robar")) {
-						SCarta robada=Servidor.partida.robar();
-						this.jugador.recibirCarta(robada);
-						out.write(robada.toString());
+						if(Servidor.partida.mazoVacio()){
+							out.write("vacio\r\n");
+							out.flush();
+						}
+						else {
+							SCarta robada=Servidor.partida.robar();
+							this.jugador.recibirCarta(robada);
+							out.write(robada.toString()+"\r\n");
+							out.flush();
+							
+							s=in.readLine();
+							if(!s.equals("pasar")) {
+								this.colocar(s);
+							}
+						}
 					}
-					
-					//Colocar, si el jugador tiene para colocar
-					s=in.readLine();
-					if(s.equals("ok")) {
-						SCarta c=this.traducirCarta(in.readLine());
-						Servidor.partida.colocarCarta(c);
+					else {
+						this.colocar(s);
 					}
 					
 					//Se acaba la partida si no le quedan cartas al jugador
@@ -74,39 +86,15 @@ public class Hilo extends Thread{
 					else {
 						Servidor.partida.turno++;
 					}
+					Servidor.partida.getMesa().showMesa();
 				}
 			}
 			
-			/*
-			//repetir hasta que se acebe la partida
-			while(true) {
-				//hacer si es su turno
-				if(Servidor.partida.getTurno()==this.turno) {
-					//enviar al cliente el estado de la mesa
-					out.write(Servidor.partida.getStringMesa()+"\r\n");
-					out.flush();
-					
-					//recibir del cliente la carta a colocar
-					stringCarta=in.readLine();
-					if(stringCarta.equals("ROBAR")) {
-						//robar carta del mazo
-						//enviarla
-						//recibir del cliente carta a colocar
-						cartaAColocar=this.traducirCarta(in.readLine());
-					}
-					else {
-						cartaAColocar=this.traducirCarta(in.readLine());
-					}
-					//colocar la carta en la mesa del servidor
-					Servidor.partida.colocarCarta(cartaAColocar);
-				}
-			}*/
-			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} /*catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public void setCountDown(CountDownLatch c) {
@@ -151,11 +139,9 @@ public class Hilo extends Thread{
 		return sCarta;
 	}
 	
-	public void esperar() {
-		
-	}
-	
-	public void jugar() {
-		
+	public void colocar(String s) {
+		SCarta c=this.traducirCarta(s);
+		Servidor.partida.colocarCarta(c);
+		this.jugador.eliminarCarta(c);
 	}
 }

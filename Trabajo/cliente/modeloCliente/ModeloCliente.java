@@ -26,6 +26,7 @@ public class ModeloCliente {
 	
 	public ModeloCliente(String n,Socket s) {
 		this.mesa=new Mesa();
+		this.mano=new ArrayList<>();
 		this.nombre=n;
 		this.socket=s;
 		
@@ -42,9 +43,10 @@ public class ModeloCliente {
 		try{
 			String s=this.in.readLine();
 			List<Carta> cartas=this.traducirCartas(s);
-		
-			for(int i=0;i<cartas.size();i++) {
-				this.mesa.place(cartas.get(i));
+			if(cartas.size()!=0) {
+				for(int i=0;i<cartas.size();i++) {
+					this.mesa.place(cartas.get(i));
+				}
 			}
 			mesa.showMesa();
 			System.out.println("\r\nTu turno");
@@ -56,7 +58,10 @@ public class ModeloCliente {
 	public void recibirMano() {
 		try {
 			String s=in.readLine();
+			System.out.println(s);
+
 			List<Carta> cartas=this.traducirCartas(s);
+			System.out.println(cartas.size());
 			
 			for(int i=0;i<cartas.size();i++) {
 				this.mano.add(cartas.get(i));
@@ -67,7 +72,7 @@ public class ModeloCliente {
 		}
 	}
 	
-	public void enviarCarta() {
+	public Carta elegirCarta() {
 		System.out.println("Tu mano: \r\n");
 		System.out.print(this.mano.toString());
 		
@@ -77,16 +82,55 @@ public class ModeloCliente {
 				colocables.add(this.mano.get(i));
 			}
 		}
-		/*
-		Carta c=this.jugador.elegirCarta(this.mesa);
-		Carta c=this.jugador.hand.get(this.teclado.nextInt());
+		
+		if(colocables.size()==0) {
+			return null;
+		}
+		else {
+			System.out.print("Elige una carta: ");
+			Carta c=colocables.get(this.teclado.nextInt());
+			return c;
+		}
+	}
+	
+	public void enviarCarta(Carta c) {
 		try {
 			this.out.write(c.toString()+"\r\n");
 			this.out.flush();
-			this.jugador.eliminarCartaMano(c);
+			this.mano.remove(c);
+			this.mesa.place(c);
 		}catch(IOException e) {
 			e.printStackTrace();
-		}*/
+		}
+	}
+	
+	public boolean robar() {
+		try {
+			this.out.write("robar\r\n");
+			this.out.flush();
+			
+			String s=this.in.readLine();
+			if(s.equals("vacio")) {
+				return false;
+			}
+			else {
+				Carta c=this.traducirCartas(this.in.readLine()).get(0);
+				this.mano.add(c);
+				return true;
+			}			
+		}catch(IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public void pasar() {
+		try {
+			this.out.write("pasar\r\n");
+			this.out.flush();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean continua() {

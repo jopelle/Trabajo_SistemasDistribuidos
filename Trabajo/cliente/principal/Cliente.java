@@ -2,7 +2,7 @@ package principal;
 
 import java.io.IOException;
 import java.net.Socket;
-
+import cartas.Carta;
 import modeloCliente.*;
 
 public class Cliente {
@@ -12,14 +12,26 @@ public class Cliente {
 						
 			ModeloCliente cliente=new ModeloCliente("Jon",socket);
 			
+			//Recibe la mano
 			cliente.recibirMano();
-			System.out.println(cliente.getName());
 			
-			
-			
-			while(continua==true) {
+			while(/*cliente.continua()==*/true) {
+				//Recibe la mesa
 				cliente.recibirMesa();
-				cliente.enviarCarta();
+				//Elegir una carta
+				Carta c=cliente.elegirCarta();
+				if(c==null) {
+					if(cliente.robar()) {
+						c=cliente.elegirCarta();
+					}
+				}
+				
+				if(c!=null) {
+					cliente.enviarCarta(c);
+				}
+				else {
+					cliente.pasar();
+				}
 			}
 			
 		}catch(IOException e) {

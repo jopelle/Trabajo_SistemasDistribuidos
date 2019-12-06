@@ -18,10 +18,8 @@ public class Servidor {
 			partida= new ControladorPartida();
 			CountDownLatch count=new CountDownLatch(4);
 			Semaphore semaforo=new Semaphore(1);
-			
-			System.out.println(partida.getTurno());
-			
-			while(i<4) {
+			System.out.println(partida.turno);
+			while(i<1) {
 				System.out.println("Esperando cliente (6666)");
 				Socket cliente=server.accept();
 				System.out.println("Se conecto un cliente");
@@ -34,8 +32,6 @@ public class Servidor {
 			while(partida.getGameOver()==false) {				
 
 			}
-			
-			System.out.println(partida.getStringMazo());
 			//partida.show();
 		}catch(IOException e) {e.printStackTrace();
 		}catch(InterruptedException e) {e.printStackTrace();}
