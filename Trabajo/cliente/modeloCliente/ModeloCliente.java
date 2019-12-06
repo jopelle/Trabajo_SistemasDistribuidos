@@ -43,7 +43,7 @@ public class ModeloCliente {
 		try{
 			String s=this.in.readLine();
 			List<Carta> cartas=this.traducirCartas(s);
-			if(cartas.size()!=0) {
+			if(cartas!=null) {
 				for(int i=0;i<cartas.size();i++) {
 					this.mesa.place(cartas.get(i));
 				}
@@ -73,8 +73,8 @@ public class ModeloCliente {
 	}
 	
 	public Carta elegirCarta() {
-		System.out.println("Tu mano: \r\n");
-		System.out.print(this.mano.toString());
+		System.out.print("Tu mano: ");
+		System.out.println(this.mano.toString());
 		
 		List<Carta> colocables=new ArrayList<>();
 		for(int i=0;i<this.mano.size();i++) {
@@ -87,6 +87,8 @@ public class ModeloCliente {
 			return null;
 		}
 		else {
+			System.out.print("Puedes colocar: ");
+			System.out.println(colocables.toString());
 			System.out.print("Elige una carta: ");
 			Carta c=colocables.get(this.teclado.nextInt());
 			return c;
@@ -98,7 +100,6 @@ public class ModeloCliente {
 			this.out.write(c.toString()+"\r\n");
 			this.out.flush();
 			this.mano.remove(c);
-			this.mesa.place(c);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -167,6 +168,10 @@ public class ModeloCliente {
 				cartas[i]=cartas[i].replaceFirst(" ", "");
 			}
 			stringCarta=cartas[i].split(" ");
+			
+			if(cartas[0].equals("")) {
+				return null;
+			}
 			
 			if(stringCarta[0].equals("S")) {
 				valor=8;
