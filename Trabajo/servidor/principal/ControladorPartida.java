@@ -35,7 +35,7 @@ public class ControladorPartida {
 		int i;
 		int p=this.players.size();
 		if(p<=4) {
-			i=40;
+			i=10;
 		}
 		else {
 			i=40/p;
@@ -58,6 +58,9 @@ public class ControladorPartida {
 		//Pre:
 		//Post: Returns gameOver.
 		return this.gameOver;
+	}
+	public void setGameOver(boolean b) {
+		this.gameOver=b;
 	}
 
 	public void winner() {

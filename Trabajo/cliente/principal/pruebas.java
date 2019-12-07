@@ -9,7 +9,7 @@ import cartas.Palo;
 public class pruebas {
 
 	public static void main(String[] args) {
-		String s="[5 Oros, 6 Oros]-[]-[]-[5 Espadas]";
+		String s="5 Oros";
 		
 		List<Carta> listaCartas=new ArrayList<>();
 		
@@ -67,6 +67,6 @@ public class pruebas {
 				}
 			}
 		}
-		System.out.println(listaCartas);
+		System.out.println(listaCartas.get(0));
 	}
 }

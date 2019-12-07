@@ -29,9 +29,8 @@ public class Servidor {
 			}
 			count.await();
 						
-			while(partida.getGameOver()==false) {				
-
-			}
+			while(partida.getGameOver()==false) {}
+			System.out.println("SE ACABO");
 			//partida.show();
 		}catch(IOException e) {e.printStackTrace();
 		}catch(InterruptedException e) {e.printStackTrace();}

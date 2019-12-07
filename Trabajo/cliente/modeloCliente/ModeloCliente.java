@@ -13,6 +13,7 @@ import cartas.Carta;
 import cartas.Jugador;
 import cartas.Mesa;
 import cartas.Palo;
+import principal.Cliente;
 
 public class ModeloCliente {
 	
@@ -42,17 +43,22 @@ public class ModeloCliente {
 	public void recibirMesa() {
 		try{
 			String s=this.in.readLine();
-			System.out.println(s);
-			List<Carta> cartas=this.traducirCartas(s);
-			System.out.println(cartas);
-
-			if(cartas!=null) {
-				for(int i=0;i<cartas.size();i++) {
-					this.mesa.place(cartas.get(i));
-				}
+			if(s.equals("fin")) {
+				this.fin();
 			}
-			mesa.showMesa();
-			System.out.println("\r\nTu turno");
+			else {	
+				System.out.println(s);
+				List<Carta> cartas=this.traducirCartas(s);
+				System.out.println(cartas);
+	
+				if(cartas!=null) {
+					for(int i=0;i<cartas.size();i++) {
+						this.mesa.place(cartas.get(i));
+					}
+				}
+				mesa.showMesa();
+				System.out.println("\r\nTu turno");
+			}
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +121,9 @@ public class ModeloCliente {
 				return false;
 			}
 			else {
-				Carta c=this.traducirCartas(this.in.readLine()).get(0);
+				Carta c=this.traducirCartas(s).get(0);
+				System.out.println("Robada: "+c);
+
 				this.mano.add(c);
 				return true;
 			}			
@@ -134,12 +142,13 @@ public class ModeloCliente {
 		}
 	}
 	
-	public boolean continua() {
+	public void fin() {
 		try {
-			return in.readLine().equals("continua");
+			System.out.println(in.readLine());
+			Cliente.continua=false;
+			this.cerrarCosas();
 		}catch (IOException e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 	
@@ -213,6 +222,16 @@ public class ModeloCliente {
 		}
 		else {
 			return listaCartas;
+		}
+	}
+	
+	public void cerrarCosas() {
+		try {
+			this.teclado.close();
+			this.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

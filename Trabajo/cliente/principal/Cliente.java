@@ -7,6 +7,7 @@ import modeloCliente.*;
 
 public class Cliente {
 
+	public static boolean continua=true;
 	public static void main(String[] args) {
 		try(Socket socket = new Socket("localhost", 6666);){
 						
@@ -15,13 +16,14 @@ public class Cliente {
 			//Recibe la mano
 			cliente.recibirMano();
 			
-			while(/*cliente.continua()==*/true) {
+			while(continua) {
 				//Recibe la mesa
 				cliente.recibirMesa();
 				//Elegir una carta
 				Carta c=cliente.elegirCarta();
 				if(c==null) {
-					if(cliente.robar()) {
+					boolean b=cliente.robar();
+					if(b==true) {
 						c=cliente.elegirCarta();
 					}
 				}

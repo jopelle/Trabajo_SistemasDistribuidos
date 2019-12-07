@@ -58,13 +58,15 @@ public class Hilo extends Thread{
 					do{s=in.readLine();} while(s==null);
 					System.out.println(s);
 					if(s.equals("robar")) {
-						if(Servidor.partida.mazoVacio()){
+						if(Servidor.partida.mazoVacio()) {
 							out.write("vacio\r\n");
 							out.flush();
 						}
 						else {
+							System.out.println("robando");
 							SCarta robada=Servidor.partida.robar();
 							this.jugador.recibirCarta(robada);
+							System.out.println(robada);
 							out.write(robada.toString()+"\r\n");
 							out.flush();
 							
@@ -80,7 +82,10 @@ public class Hilo extends Thread{
 					
 					//Se acaba la partida si no le quedan cartas al jugador
 					//Se pasa el turno en caso contrario
-					if(this.turno==Servidor.partida.players.size()-1) {
+					if(this.jugador.cardsInHand()==0) {
+						Servidor.partida.setGameOver(true);
+					}
+					else if(this.turno==Servidor.partida.players.size()-1) {
 						Servidor.partida.turno=0;
 					}
 					else {
@@ -89,7 +94,10 @@ public class Hilo extends Thread{
 					Servidor.partida.getMesa().showMesa();
 				}
 			}
-			
+			out.write("fin\r\n");
+			out.flush();
+			out.write("El ganador es: "+Servidor.partida.players.get(Servidor.partida.turno).getName()+"\r\n");	
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} /*catch (InterruptedException e) {
