@@ -43,6 +43,7 @@ public class ModeloCliente {
 	public boolean recibirMesa() {
 		try{
 			String s=this.in.readLine();
+
 			System.out.println("s");
 			if(s.equals("fin")) {
 				this.fin();
@@ -174,7 +175,6 @@ public class ModeloCliente {
 			palos[j]=palos[j].replace("]", "");
 						
 			if(!palos[j].equals("")) {
-				System.out.println(palos[j]);
 
 				String[]cartas=palos[j].split(",");
 								

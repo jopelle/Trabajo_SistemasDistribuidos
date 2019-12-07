@@ -42,8 +42,8 @@ public class Hilo extends Thread{
 			System.out.println(this.turno);
 
 			while(Servidor.partida.getGameOver()==false) {
+
 				if(this.turno==Servidor.partida.getTurno()) {
-					System.out.println(Servidor.partida.turno);
 					System.out.println("Turno: "+this.jugador.getName());
 
 					//Envia la mesa
@@ -92,6 +92,7 @@ public class Hilo extends Thread{
 
 					Servidor.partida.getMesa().showMesa();
 				}
+				System.out.println("coño ya");
 			}
 			out.write("fin\r\n");
 			out.flush();
