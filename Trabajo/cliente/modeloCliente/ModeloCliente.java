@@ -40,11 +40,12 @@ public class ModeloCliente {
 		}
 	}
 	
-	public void recibirMesa() {
+	public boolean recibirMesa() {
 		try{
 			String s=this.in.readLine();
 			if(s.equals("fin")) {
 				this.fin();
+				return false;
 			}
 			else {	
 				System.out.println(s);
@@ -58,9 +59,11 @@ public class ModeloCliente {
 				}
 				mesa.showMesa();
 				System.out.println("\r\nTu turno");
+				return true;
 			}
 		}catch(IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
@@ -145,7 +148,6 @@ public class ModeloCliente {
 	public void fin() {
 		try {
 			System.out.println(in.readLine());
-			Cliente.continua=false;
 			this.cerrarCosas();
 		}catch (IOException e) {
 			e.printStackTrace();
