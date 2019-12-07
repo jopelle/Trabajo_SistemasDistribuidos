@@ -31,25 +31,22 @@ public class Hilo extends Thread{
 			String stringCarta;
 			SCarta cartaAColocar;
 						
+			this.count.countDown();
+			this.count.await();
+			
 			//se envian las cartas al cliente
 			out.write(this.jugador.handToString()+"\r\n");
 			out.flush();
 			System.out.println(this.jugador.handToString());
 
 			System.out.println(this.turno);
-			//SCarta c=this.traducirCarta(in.readLine());
-			//System.out.println(c);
-			//Servidor.partida.colocarCarta(c);
-			this.count.countDown();
-			//this.count.await();
-			
+
 			while(Servidor.partida.getGameOver()==false) {
 				if(this.turno==Servidor.partida.getTurno()) {
-					
-					System.out.println(this.jugador.getName());
+					System.out.println(Servidor.partida.turno);
+					System.out.println("Turno: "+this.jugador.getName());
 
 					//Envia la mesa
-					System.out.println(Servidor.partida.getStringMesa());
 					out.write(Servidor.partida.getStringMesa()+"\r\n");
 					out.flush();
 					
@@ -85,24 +82,28 @@ public class Hilo extends Thread{
 					if(this.jugador.cardsInHand()==0) {
 						Servidor.partida.setGameOver(true);
 					}
-					else if(this.turno==Servidor.partida.players.size()-1) {
+					else if(this.turno==Servidor.partida.getNPlayers()-1) {
 						Servidor.partida.turno=0;
 					}
 					else {
 						Servidor.partida.turno++;
 					}
+					System.out.println(Servidor.partida.turno);
+
 					Servidor.partida.getMesa().showMesa();
 				}
 			}
 			out.write("fin\r\n");
 			out.flush();
-			out.write("El ganador es: "+Servidor.partida.players.get(Servidor.partida.turno).getName()+"\r\n");	
+			out.write("El ganador es: "+Servidor.partida.getPlayer(Servidor.partida.turno).getName()+"\r\n");
 			out.flush();
+			
+			System.out.println("se acabo");
 		} catch (IOException e) {
 			e.printStackTrace();
-		} /*catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	public void setCountDown(CountDownLatch c) {

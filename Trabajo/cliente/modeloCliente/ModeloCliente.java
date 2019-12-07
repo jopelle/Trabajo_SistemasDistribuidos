@@ -43,6 +43,7 @@ public class ModeloCliente {
 	public boolean recibirMesa() {
 		try{
 			String s=this.in.readLine();
+			System.out.println("s");
 			if(s.equals("fin")) {
 				this.fin();
 				return false;

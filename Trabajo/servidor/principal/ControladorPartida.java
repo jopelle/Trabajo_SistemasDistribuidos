@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class ControladorPartida {
 	private SMesa mesa;
-	public List<SJugador> players;
+	private List<SJugador> players;
 	private Baraja mazo;
 	public int turno;
 	private boolean gameOver;
@@ -17,14 +17,18 @@ public class ControladorPartida {
 		this.mazo=new Baraja();
 		this.turno=0;
 		this.gameOver=false;
-		
-		this.players.add(new SJugador("a"));
-	/*	this.players.add(new SJugador("b"));
-		this.players.add(new SJugador("c"));
-		this.players.add(new SJugador("d"));*/
-
-		
-		this.repartir();
+	}
+	
+	public int getNPlayers() {
+		return this.players.size();
+	}
+	
+	public SJugador getPlayer(int i) {
+		return this.players.get(i);
+	}
+	
+	public void anadirJugador(String n) {
+		this.players.add(new SJugador(n));
 	}
 	
 	public void repartir() {
