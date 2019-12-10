@@ -92,7 +92,6 @@ public class Hilo extends Thread{
 
 					Servidor.partida.getMesa().showMesa();
 				}
-				System.out.println("coño ya");
 			}
 			out.write("fin\r\n");
 			out.flush();

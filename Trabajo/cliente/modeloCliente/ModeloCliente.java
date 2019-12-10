@@ -40,6 +40,8 @@ public class ModeloCliente {
 		}
 	}
 	
+	/*Recibe la mesa y la traduce, si esta vacia devuelve null,
+	 * si recibe "fin" la partida se ha acabado */
 	public boolean recibirMesa() {
 		try{
 			String s=this.in.readLine();
@@ -69,6 +71,7 @@ public class ModeloCliente {
 		}
 	}
 	
+	/*Recibe y traduce la mano*/
 	public void recibirMano() {
 		try {
 			String s=in.readLine();
