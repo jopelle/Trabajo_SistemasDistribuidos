@@ -22,7 +22,7 @@ public class Cliente {
 				continua=cliente.recibirMesa();
 
 				if(continua) {
-					//Elegir una carta
+					//Elegir una carta, si no se puede elegir (null), se roba y si tampoco se pasa
 					Carta c=cliente.elegirCarta();
 					if(c==null) {
 						boolean b=cliente.robar();
