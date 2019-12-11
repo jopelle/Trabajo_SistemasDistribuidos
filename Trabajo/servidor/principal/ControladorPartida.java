@@ -36,15 +36,8 @@ public class ControladorPartida {
 		//Post: Shuffles the deck, deals the cards among the players and assigns the initial turn.
 		this.mazo.shuffle();
 		SCarta c;
-		int i;
 		int p=this.players.size();
-		if(p<=4) {
-			i=10;
-		}
-		else {
-			i=40/p;
-		}
-		for(int j=0;j<i;j++) {
+		for(int j=0;j<6;j++) {
 			for(int k=0;k<p;k++) {
 				c=this.mazo.drawCard();
 				this.players.get(k).recibirCarta(c);
