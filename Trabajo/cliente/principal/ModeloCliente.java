@@ -1,4 +1,4 @@
-package modeloCliente;
+package principal;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -81,6 +81,8 @@ public class ModeloCliente {
 			for(int i=0;i<cartas.size();i++) {
 				this.mano.add(cartas.get(i));
 			}
+			System.out.println(this.mano);
+
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +106,7 @@ public class ModeloCliente {
 			System.out.print("Puedes colocar: ");
 			System.out.println(colocables.toString());
 			System.out.print("Elige una carta: ");
-			Carta c=colocables.get(this.teclado.nextInt());
+			Carta c=colocables.get(0/*this.teclado.nextInt()*/);
 			return c;
 		}
 	}
