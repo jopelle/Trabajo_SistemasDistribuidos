@@ -9,27 +9,30 @@ import java.util.concurrent.Semaphore;
 
 public class Servidor {
 	public static ControladorPartida partida;
-	public static Semaphore semaforo=new Semaphore(2);
+	public static CountDownLatch count;
+	public static CountDownLatch fin;
 	
 	public static void main(String[] args) {
 		Scanner in=new Scanner(System.in);
 		System.out.println("Introduce el numero de jugadres (n<6): ");
-		int n=in.nextInt();
-		int i=0;
+		int n=2;//in.nextInt();
 		
 		try (ServerSocket server=new ServerSocket(6666);){
 			partida= new ControladorPartida();
-			CountDownLatch count=new CountDownLatch(3);
-			while(i<n) {
+			count=new CountDownLatch(n+1);
+			fin=new CountDownLatch(n);
+			
+			SJugador j;
+			
+			for(int i=0;i<n;i++) {
 				System.out.println("Esperando cliente (6666)");
 				Socket cliente=server.accept();
-				partida.anadirJugador("Jugador "+i);
+				j=new SJugador("Jugador "+i);
+				partida.añadirJugador(j);
 				System.out.println("Se conecto un cliente");
 				
-				Hilo hilo=new Hilo(cliente,partida.getPlayer(i),count,i);
+				Hilo hilo=new Hilo(cliente,j,i);
 				hilo.start();
-				
-				i++;
 			}
 			
 			partida.repartir();
@@ -37,10 +40,9 @@ public class Servidor {
 			count.countDown();
 			count.await();
 			
-			while(partida.getGameOver()==false) {}
-			System.out.println("SE ACABO");
-			in.close();
+			fin.await();
 			
+			in.close();
 		}catch(IOException e) {e.printStackTrace();
 		}catch(InterruptedException e) {e.printStackTrace();}
 	}

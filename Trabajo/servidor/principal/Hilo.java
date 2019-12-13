@@ -16,13 +16,11 @@ public class Hilo extends Thread{
 	
 	private Socket socket;
 	private SJugador jugador;
-	private CountDownLatch count;
 	private int turno;
 	
-	public Hilo(Socket s,SJugador j, CountDownLatch c, int t) {
+	public Hilo(Socket s,SJugador j, int t) {
 		this.socket=s;
 		this.jugador=j;
-		this.count=c;
 		this.turno=t;
 	}
 	public void run() {
@@ -31,20 +29,20 @@ public class Hilo extends Thread{
 			String stringCarta;
 			SCarta cartaAColocar;
 						
-			this.count.countDown();
-			this.count.await();
+			Servidor.count.countDown();
+			Servidor.count.await();
 			
 			//se envian las cartas al cliente
-			out.write(this.jugador.handToString()+"\r\n");
+			out.write(this.jugador.getStringMano()+"\r\n");
 			out.flush();
-			System.out.println(this.jugador.handToString());
+			System.out.println(this.jugador.getStringMano());
 
 			System.out.println(this.turno);
 
 			while(Servidor.partida.getGameOver()==false) {
 
 				if(this.turno==Servidor.partida.getTurno()) {
-					System.out.println("Turno: "+this.jugador.getName());
+					System.out.println("Turno: "+this.turno);
 
 					//Envia la mesa
 					out.write(Servidor.partida.getStringMesa()+"\r\n");
@@ -79,35 +77,27 @@ public class Hilo extends Thread{
 					
 					//Se acaba la partida si no le quedan cartas al jugador
 					//Se pasa el turno en caso contrario
-					if(this.jugador.cardsInHand()==0) {
+					if(this.jugador.numeroCartas()==0) {
 						Servidor.partida.setGameOver(true);
 					}
-					else if(this.turno==Servidor.partida.getNPlayers()-1) {
-						Servidor.partida.turno=0;
-					}
 					else {
-						Servidor.partida.turno++;
+						Servidor.partida.pasarTurno();
 					}
 					System.out.println(Servidor.partida.turno);
 
-					Servidor.partida.getMesa().showMesa();
+					Servidor.partida.mostrarMesa();
 				}
 			}
 			out.write("fin\r\n");
 			out.flush();
-			out.write("El ganador es: "+Servidor.partida.getPlayer(Servidor.partida.turno).getName()+"\r\n");
+			out.write("El ganador es: "+Servidor.partida.getJugador(Servidor.partida.turno).getNombre()+"\r\n");
 			out.flush();
-			
-			System.out.println("se acabo");
+			Servidor.fin.countDown();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void setCountDown(CountDownLatch c) {
-		this.count=c;
 	}
 	
 	private SCarta traducirCarta(String cadena){

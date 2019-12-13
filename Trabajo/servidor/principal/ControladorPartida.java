@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import cartas.Carta;
+
 public class ControladorPartida {
 	private SMesa mesa;
 	private List<SJugador> players;
@@ -19,16 +21,14 @@ public class ControladorPartida {
 		this.gameOver=false;
 	}
 	
-	public int getNPlayers() {
+	public int numeroJugadores() {
 		return this.players.size();
 	}
-	
-	public SJugador getPlayer(int i) {
+	public SJugador getJugador(int i) {
 		return this.players.get(i);
-	}
-	
-	public void anadirJugador(String n) {
-		this.players.add(new SJugador(n));
+	}	
+	public void añadirJugador(SJugador j) {
+		this.players.add(j);
 	}
 	
 	public void repartir() {
@@ -49,55 +49,42 @@ public class ControladorPartida {
 			}
 		}
 	}
-	public void jugada() {}
-	
 	public boolean getGameOver() {
-		//Pre:
-		//Post: Returns gameOver.
 		return this.gameOver;
 	}
 	public void setGameOver(boolean b) {
 		this.gameOver=b;
 	}
 
-	public void winner() {
-		//Pre:
-		//Post: If the game is over shows the winner.
-		if(this.gameOver==true) {
-			System.out.println("\n Se acabo la partida \n");
-			System.out.println("El ganador es: "+this.players.get(this.turno).getName()+"\n");
-		}
-	}
-	
 	public int getTurno() {
 		return this.turno;
 	}
 	
-	public SMesa getMesa() {
-		return this.mesa;
-	} 
-	
+	public void mostrarMesa() {
+		this.mesa.showMesa();
+	}
 	public String getStringMesa() {
 		return this.mesa.toString();
 	}
+	public void colocarCarta(SCarta c) {
+		this.mesa.place(c);
+	}
 	
+	public SCarta robar() {
+		return this.mazo.drawCard();
+	}
 	public boolean mazoVacio() {
 		return this.mazo.isEmpty();
 	}
 	
-	public void show() {
-		this.mesa.showMesa();
-	}
-	
-	public String getStringMano() {
-		return this.players.get(this.turno).handToString();
-	}
-	
-	public void colocarCarta(SCarta c) {
-		this.mesa.place(c);
-	} 
-	
-	public SCarta robar() {
-		return this.mazo.drawCard();
+	public void pasarTurno() {
+		if(this.turno==this.numeroJugadores()-1) {
+			//System.out.println("pasar turno 1");
+			this.turno=0;
+		}
+		else {
+			//System.out.println("pasar turno 0");
+			this.turno++;
+		}
 	}
 }
