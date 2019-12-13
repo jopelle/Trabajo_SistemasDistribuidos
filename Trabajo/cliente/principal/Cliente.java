@@ -3,12 +3,11 @@ package principal;
 import java.io.IOException;
 import java.net.Socket;
 import cartas.Carta;
-import modeloCliente.*;
 
 public class Cliente {
 
 	public static void main(String[] args) {
-		try(Socket socket = new Socket("localhost", 6666);){
+		try(Socket socket = new Socket("10.11.62.23", 6666);){
 						
 			ModeloCliente cliente=new ModeloCliente("Jon",socket);
 			boolean fin=false;
@@ -16,7 +15,7 @@ public class Cliente {
 			
 			//Recibe la mano
 			cliente.recibirMano();
-
+			
 			while(!fin) {
 				//Recibe la mesa, si recibe fin en vez de la mesa, la partida se acabo
 				continua=cliente.recibirMesa();
