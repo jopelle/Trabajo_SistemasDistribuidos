@@ -15,7 +15,7 @@ public class Servidor {
 	public static void main(String[] args) {
 		Scanner in=new Scanner(System.in);
 		System.out.println("Introduce el numero de jugadres (n<6): ");
-		int n=2;//in.nextInt();
+		int n=in.nextInt();
 		
 		try (ServerSocket server=new ServerSocket(6666);){
 			partida= new ControladorPartida();
