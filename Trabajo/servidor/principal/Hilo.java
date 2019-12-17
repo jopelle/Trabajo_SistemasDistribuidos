@@ -39,6 +39,7 @@ public class Hilo extends Thread{
 
 			System.out.println(this.turno);
 
+			//La condicion se un readline o una señal
 			while(Servidor.partida.getGameOver()==false) {
 
 				if(this.turno==Servidor.partida.getTurno()) {
@@ -50,7 +51,7 @@ public class Hilo extends Thread{
 					
 					//Robar o coloca
 					String s;
-					do{s=in.readLine();} while(s==null);
+					s=in.readLine();
 					System.out.println(s);
 					if(s.equals("robar")) {
 						if(Servidor.partida.mazoVacio()) {

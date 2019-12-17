@@ -106,7 +106,7 @@ public class ModeloCliente {
 			System.out.print("Puedes colocar: ");
 			System.out.println(colocables.toString());
 			System.out.print("Elige una carta: ");
-			Carta c=colocables.get(0/*this.teclado.nextInt()*/);
+			Carta c=colocables.get(this.teclado.nextInt());
 			return c;
 		}
 	}
