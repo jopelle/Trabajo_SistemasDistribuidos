@@ -28,6 +28,8 @@ public class Hilo extends Thread{
 			BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));){
 			String stringCarta;
 			SCarta cartaAColocar;
+			
+			this.jugador.setNombre(in.readLine());
 						
 			Servidor.count.countDown();
 			Servidor.count.await();
@@ -36,23 +38,37 @@ public class Hilo extends Thread{
 			out.write(this.jugador.getStringMano()+"\r\n");
 			out.flush();
 			System.out.println(this.jugador.getStringMano());
+			
+			//turno
+			int ultimoTurno=Servidor.partida.getTurno();
 
-			System.out.println(this.turno);
-
-			//La condicion se un readline o una señal
 			while(Servidor.partida.getGameOver()==false) {
-
+				Thread.sleep(1);
+				//Comprobar si el turno ha cambiado para actulizar la mesa
+				if(ultimoTurno!=Servidor.partida.getTurno()) {
+					if(ultimoTurno==Servidor.partida.numeroJugadores()-1) {
+						ultimoTurno=0;
+					}
+					else {
+						ultimoTurno++;
+					}
+					out.write("actualizar\r\n");
+					out.flush();
+					out.write(Servidor.partida.getStringMesa()+"\r\n");
+					out.flush();
+				}
+				
+				//Si es su turno
 				if(this.turno==Servidor.partida.getTurno()) {
-					System.out.println("Turno: "+this.turno);
+					System.out.println("Turno: "+this.jugador.getNombre());
 
 					//Envia la mesa
 					out.write(Servidor.partida.getStringMesa()+"\r\n");
 					out.flush();
 					
-					//Robar o coloca
+					//Robar o colocar
 					String s;
 					s=in.readLine();
-					System.out.println(s);
 					if(s.equals("robar")) {
 						if(Servidor.partida.mazoVacio()) {
 							out.write("vacio\r\n");
@@ -84,8 +100,6 @@ public class Hilo extends Thread{
 					else {
 						Servidor.partida.pasarTurno();
 					}
-					System.out.println(Servidor.partida.turno);
-
 					Servidor.partida.mostrarMesa();
 				}
 			}

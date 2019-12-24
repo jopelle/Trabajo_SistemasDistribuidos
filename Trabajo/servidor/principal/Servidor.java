@@ -3,6 +3,8 @@ package principal;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
@@ -11,11 +13,13 @@ public class Servidor {
 	public static ControladorPartida partida;
 	public static CountDownLatch count;
 	public static CountDownLatch fin;
+	public static Semaphore semaforo=new Semaphore(1);
 	
 	public static void main(String[] args) {
 		Scanner in=new Scanner(System.in);
-		System.out.println("Introduce el numero de jugadres (n<6): ");
+		System.out.print("Introduce el numero de jugadres (n<6): ");
 		int n=in.nextInt();
+		System.out.println("");
 		
 		try (ServerSocket server=new ServerSocket(6666);){
 			partida= new ControladorPartida();
@@ -41,6 +45,8 @@ public class Servidor {
 			count.await();
 			
 			fin.await();
+			
+			System.out.println("SE ACABÓ");
 			
 			in.close();
 		}catch(IOException e) {e.printStackTrace();

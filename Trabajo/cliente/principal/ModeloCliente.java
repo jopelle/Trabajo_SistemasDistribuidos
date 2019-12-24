@@ -19,16 +19,14 @@ public class ModeloCliente {
 	
 	private Mesa mesa;
 	private List<Carta> mano;
-	private String nombre;
 	private Socket socket;
 	private BufferedReader in;
 	private BufferedWriter out;
 	private Scanner teclado;
 	
-	public ModeloCliente(String n,Socket s) {
+	public ModeloCliente(Socket s) {
 		this.mesa=new Mesa();
 		this.mano=new ArrayList<>();
-		this.nombre=n;
 		this.socket=s;
 		
 		try{
@@ -40,34 +38,55 @@ public class ModeloCliente {
 		}
 	}
 	
-	/*Recibe la mesa y la traduce, si esta vacia devuelve null,
-	 * si recibe "fin" la partida se ha acabado */
-	public boolean recibirMesa() {
-		try{
-			String s=this.in.readLine();
+	public List<Carta> getMano() {
+		return this.mano;
+	}
+	
+	public void elegirNombre() {
+		try {
+			System.out.print("Tu nombre: ");
+			String s=this.teclado.next();
+			System.out.println();
 
-			System.out.println("s");
-			if(s.equals("fin")) {
+			this.out.write(s+"\r\n");
+			this.out.flush();
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public String recibirMensaje() {
+		try{			
+			String s=this.in.readLine();
+			if(s.equals("actualizar")) {
+				s=this.in.readLine();
+				this.traducirMesa(s);
+				this.mesa.showMesa();
+				return "actualizar";
+			}
+			else if(s.equals("fin")) {
 				this.fin();
-				return false;
+				return "fin";
 			}
 			else {	
-				System.out.println(s);
-				List<Carta> cartas=this.traducirCartas(s);
-				System.out.println(cartas);
-	
-				if(cartas!=null) {
-					for(int i=0;i<cartas.size();i++) {
-						this.mesa.place(cartas.get(i));
-					}
-				}
-				mesa.showMesa();
+				this.traducirMesa(s);
 				System.out.println("\r\nTu turno");
-				return true;
+				return "continua";
 			}
 		}catch(IOException e) {
 			e.printStackTrace();
-			return false;
+			return null;
+		}
+	}
+	
+
+	public void traducirMesa(String cadenaCartas) {
+		List<Carta> cartas=this.traducirCartas(cadenaCartas);
+		
+		if(cartas!=null) {
+			for(int i=0;i<cartas.size();i++) {
+				this.mesa.place(cartas.get(i));
+			}
 		}
 	}
 	
@@ -81,8 +100,7 @@ public class ModeloCliente {
 			for(int i=0;i<cartas.size();i++) {
 				this.mano.add(cartas.get(i));
 			}
-			System.out.println(this.mano);
-
+			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -147,6 +165,7 @@ public class ModeloCliente {
 		try {
 			this.out.write("pasar\r\n");
 			this.out.flush();
+			System.out.println("No puedes colocar,pasas turno");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -159,10 +178,6 @@ public class ModeloCliente {
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public String getName() {
-		return this.nombre;
 	}
 	
 	public Mesa getMesa() {

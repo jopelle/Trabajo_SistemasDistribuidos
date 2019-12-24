@@ -21,8 +21,7 @@ public class Mesa {
 	public void place(Carta c) {
 		//Pre: Receives a Carta.
 		//Post: Places the given  card on the right place.
-		boolean yaEsta;
-		System.out.println(c);
+		boolean yaEsta=false;
 		if(this.oro.contains(c)) {yaEsta=true;}
 		else if(this.copa.contains(c)) {yaEsta=true;}
 		else if(this.espada.contains(c)) {yaEsta=true;}
@@ -33,7 +32,7 @@ public class Mesa {
 				if(c.getValor()==5) {
 					this.oro.add(c);
 				}
-				else if(c.getValor()>this.oro.getLast().getValor()) {
+				else if(this.oro.getLast()!=null && c.getValor()>this.oro.getLast().getValor()) {
 					this.oro.addLast(c);
 				}
 				else {
@@ -44,7 +43,7 @@ public class Mesa {
 				if(c.getValor()==5) {
 					this.basto.add(c);
 				}
-				else if(c.getValor()>this.basto.getLast().getValor()) {
+				else if(this.basto.getLast()!=null && c.getValor()>this.basto.getLast().getValor()) {
 					this.basto.addLast(c);
 				}
 				else {
@@ -55,8 +54,8 @@ public class Mesa {
 				if(c.getValor()==5) {
 					this.espada.add(c);
 				}
-				else if(c.getValor()>this.espada.getLast().getValor()) {
-						this.espada.addLast(c);
+				else if(this.espada.getLast()!=null && c.getValor()>this.espada.getLast().getValor()) {
+					this.espada.addLast(c);
 				}
 				else {
 					this.espada.addFirst(c);
@@ -66,7 +65,7 @@ public class Mesa {
 				if(c.getValor()==5) {
 					this.copa.add(c);
 				}
-				else if(c.getValor()>this.copa.getLast().getValor()) {
+				else if(this.copa.getLast()!=null && c.getValor()>this.copa.getLast().getValor()) {
 					this.copa.addLast(c);
 				}
 				else {
