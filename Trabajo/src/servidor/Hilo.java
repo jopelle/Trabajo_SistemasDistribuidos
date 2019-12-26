@@ -36,23 +36,23 @@ public class Hilo extends Thread{
 			oos.writeObject(this.jugador.getMano());
 			
 			//Turno
-			//int ultimoTurno=Servidor.partida.getTurno();
+			int ultimoTurno=Servidor.partida.getTurno();
 
 			while(Servidor.partida.getGameOver()==false) {
 				Thread.sleep(1);
 				//Comprobar si el turno ha cambiado para actulizar la mesa
-				/*if(ultimoTurno!=Servidor.partida.getTurno()) {
+				if(ultimoTurno!=Servidor.partida.getTurno()) {
 					if(ultimoTurno==Servidor.partida.numeroJugadores()-1) {
 						ultimoTurno=0;
 					}
 					else {
 						ultimoTurno++;
 					}
-					out.write("actualizar\r\n");
-					out.flush();
-					out.write(Servidor.partida.getStringMesa()+"\r\n");
-					out.flush();
-				}*/
+					s="actualizar";
+					oos.writeObject(s);
+					oos.writeObject(Servidor.partida.getMesa());
+					oos.reset();
+				}
 				
 				//Si es su turno
 				if(this.turno==Servidor.partida.getTurno()) {

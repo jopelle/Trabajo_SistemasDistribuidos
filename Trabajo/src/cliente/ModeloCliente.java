@@ -57,7 +57,6 @@ public class ModeloCliente {
 	public String recibirMensaje() {
 		try{	
 			String s=(String)this.ois.readObject();
-			System.out.println(s);
 			if(s.equals("actualizar")) {
 				this.mesa=(Mesa)this.ois.readObject();
 				this.mesa.showMesa();
