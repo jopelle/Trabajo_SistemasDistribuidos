@@ -1,28 +1,26 @@
-package principal;
+package cliente;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import cartas.Carta;
-import cartas.Jugador;
-import cartas.Mesa;
-import cartas.Palo;
-import principal.Cliente;
+import cartas.*;
 
 public class ModeloCliente {
 	
 	private Mesa mesa;
 	private List<Carta> mano;
 	private Socket socket;
-	private BufferedReader in;
-	private BufferedWriter out;
 	private Scanner teclado;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 	
 	public ModeloCliente(Socket s) {
 		this.mesa=new Mesa();
@@ -30,8 +28,8 @@ public class ModeloCliente {
 		this.socket=s;
 		
 		try{
-			this.out = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
-			this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+			this.oos = new ObjectOutputStream(this.socket.getOutputStream());
+			this.ois = new ObjectInputStream(this.socket.getInputStream());
 			this.teclado=new Scanner(System.in);
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -48,19 +46,20 @@ public class ModeloCliente {
 			String s=this.teclado.next();
 			System.out.println();
 
-			this.out.write(s+"\r\n");
-			this.out.flush();
+			oos.writeObject(s);
+
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	public String recibirMensaje() {
-		try{			
-			String s=this.in.readLine();
+		try{	
+			String s=(String)this.ois.readObject();
+			System.out.println(s);
 			if(s.equals("actualizar")) {
-				s=this.in.readLine();
-				this.traducirMesa(s);
+				this.mesa=(Mesa)this.ois.readObject();
 				this.mesa.showMesa();
 				return "actualizar";
 			}
@@ -69,39 +68,32 @@ public class ModeloCliente {
 				return "fin";
 			}
 			else {	
-				this.traducirMesa(s);
+				Mesa m=(Mesa)this.ois.readObject();
+				m.showMesa();
+				this.mesa=m;//(Mesa)this.ois.readObject();
 				System.out.println("\r\nTu turno");
+				this.mesa.showMesa();
 				return "continua";
 			}
 		}catch(IOException e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-	
-
-	public void traducirMesa(String cadenaCartas) {
-		List<Carta> cartas=this.traducirCartas(cadenaCartas);
-		
-		if(cartas!=null) {
-			for(int i=0;i<cartas.size();i++) {
-				this.mesa.place(cartas.get(i));
-			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
 	/*Recibe y traduce la mano*/
 	public void recibirMano() {
 		try {
-			String s=in.readLine();
 
-			List<Carta> cartas=this.traducirCartas(s);
-			
-			for(int i=0;i<cartas.size();i++) {
-				this.mano.add(cartas.get(i));
-			}
+			this.mano=(List<Carta>)ois.readObject();
+			System.out.println(this.mano);
 			
 		}catch(IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -131,8 +123,11 @@ public class ModeloCliente {
 	
 	public void enviarCarta(Carta c) {
 		try {
-			this.out.write(c.toString()+"\r\n");
-			this.out.flush();
+			String s="carta";
+			oos.writeObject(s);
+
+			oos.writeObject(c);
+			oos.reset();
 			this.mano.remove(c);
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -141,15 +136,16 @@ public class ModeloCliente {
 	
 	public boolean robar() {
 		try {
-			this.out.write("robar\r\n");
-			this.out.flush();
+			String s="robar";
+			oos.writeObject(s);
 			
-			String s=this.in.readLine();
+			s=(String)ois.readObject();
+
 			if(s.equals("vacio")) {
 				return false;
 			}
 			else {
-				Carta c=this.traducirCartas(s).get(0);
+				Carta c=(Carta)ois.readObject();
 				System.out.println("Robada: "+c);
 
 				this.mano.add(c);
@@ -158,13 +154,17 @@ public class ModeloCliente {
 		}catch(IOException e) {
 			e.printStackTrace();
 			return false;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	public void pasar() {
 		try {
-			this.out.write("pasar\r\n");
-			this.out.flush();
+			String s="pasar";
+			oos.writeObject(s);
+
 			System.out.println("No puedes colocar,pasas turno");
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -173,78 +173,14 @@ public class ModeloCliente {
 	
 	public void fin() {
 		try {
-			System.out.println(in.readLine());
+			String s=(String)ois.readObject();
+			System.out.println(s);
 			this.cerrarCosas();
 		}catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	public Mesa getMesa() {
-		return this.mesa;
-	}
-	
-	private List<Carta> traducirCartas(String s){
-		List<Carta> listaCartas=new ArrayList<>();
-		
-		String[]palos=s.split("-");
-		
-		for(int j=0;j<palos.length;j++) {
-
-			palos[j]=palos[j].replace("[", "");
-			palos[j]=palos[j].replace("]", "");
-						
-			if(!palos[j].equals("")) {
-
-				String[]cartas=palos[j].split(",");
-								
-				String[]stringCarta;
-
-				Carta carta;
-				int valor;
-				
-				for(int i=0;i<cartas.length;i++) {
-
-					if(i!=0){
-						cartas[i]=cartas[i].replaceFirst(" ", "");
-					}
-						
-					stringCarta=cartas[i].split(" ");
-					
-					if(stringCarta[0].equals("S")) {
-						valor=8;
-					}
-					else if(stringCarta[0].equals("C")) {
-						valor=9;
-					}
-					else if(stringCarta[0].equals("R")) {
-						valor=10;
-					}
-					else {
-						valor=Integer.valueOf(stringCarta[0]);
-					}
-					
-					if(stringCarta[1].equals("Oros")) {
-						carta=new Carta(Palo.Oros,valor);
-					}
-					else if(stringCarta[1].equals("Espadas")) {
-						carta=new Carta(Palo.Espadas,valor);
-					}
-					else if(stringCarta[1].equals("Bastos")) {
-						carta=new Carta(Palo.Bastos,valor);
-					}
-					else {
-						carta=new Carta(Palo.Copas,valor);
-					}
-					listaCartas.add(carta);
-				}
-			}
-		}
-		if(listaCartas.size()==0) {
-			return null;
-		}
-		else {
-			return listaCartas;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

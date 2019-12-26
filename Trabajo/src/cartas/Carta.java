@@ -1,8 +1,8 @@
 package cartas;
 
-import cartas.Palo;
+import java.io.Serializable;
 
-public class Carta {
+public class Carta implements Serializable{
 	private Palo Palo;
 	private int valor;
 	

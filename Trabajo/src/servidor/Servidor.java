@@ -1,4 +1,5 @@
-package principal;
+package servidor;
+
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,18 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
 
 public class Servidor {
 	public static ControladorPartida partida;
 	public static CountDownLatch count;
 	public static CountDownLatch fin;
-	public static Semaphore semaforo=new Semaphore(1);
 	
 	public static void main(String[] args) {
 		Scanner in=new Scanner(System.in);
 		System.out.print("Introduce el numero de jugadres (n<6): ");
-		int n=in.nextInt();
+		//int n=in.nextInt();
+		int n=1;
 		System.out.println("");
 		
 		try (ServerSocket server=new ServerSocket(6666);){
@@ -26,12 +26,12 @@ public class Servidor {
 			count=new CountDownLatch(n+1);
 			fin=new CountDownLatch(n);
 			
-			SJugador j;
+			Jugador j;
 			
 			for(int i=0;i<n;i++) {
 				System.out.println("Esperando cliente (6666)");
 				Socket cliente=server.accept();
-				j=new SJugador("Jugador "+i);
+				j=new Jugador();
 				partida.añadirJugador(j);
 				System.out.println("Se conecto un cliente");
 				

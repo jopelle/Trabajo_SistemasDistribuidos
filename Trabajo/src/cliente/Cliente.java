@@ -1,10 +1,9 @@
-package principal;
+package cliente;
 
 import java.io.IOException;
 import java.net.Socket;
 
 import cartas.Carta;
-import interfaz.framePrueba;
 
 public class Cliente {
 
@@ -26,8 +25,6 @@ public class Cliente {
 				o "fin"(la partida se acabó)*/		
 				mensaje=cliente.recibirMensaje();
 				
-				
-
 				if(mensaje.equals("continua")) {
 					//Elegir una carta, si no se puede elegir (null), se roba y si tampoco se pasa
 					Carta c=cliente.elegirCarta();

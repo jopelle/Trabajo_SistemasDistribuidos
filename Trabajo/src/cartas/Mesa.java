@@ -1,10 +1,8 @@
 package cartas;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 
-import cartas.Carta;
-import cartas.Palo;
-
-public class Mesa {
+public class Mesa implements Serializable{
 	private java.util.Deque<Carta> oro;
 	private java.util.Deque<Carta> copa;
 	private java.util.Deque<Carta> espada;

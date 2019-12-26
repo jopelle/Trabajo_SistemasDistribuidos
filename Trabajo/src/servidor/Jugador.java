@@ -1,16 +1,19 @@
-package principal;
+package servidor;
 
-import scartas.SCarta;
 
-public class SJugador {
-	private java.util.List<SCarta> mano;
+import java.util.List;
+
+import cartas.Carta;
+
+public class Jugador {
+	private List<Carta> mano;
 	private String nombre;
 	
-	public SJugador(String n) {
+	public Jugador() {
 		//Pre: Constructor of Jugador. Receives a String.
 		//Post: Creates a Jugador with the given parameter(Name).
-		this.nombre=n;
-		this.mano=new java.util.ArrayList<SCarta>();
+		this.nombre="jugador";
+		this.mano=new java.util.ArrayList<Carta>();
 	}
 	
 	public int numeroCartas() {
@@ -29,18 +32,18 @@ public class SJugador {
 		this.nombre=n;
 	}
 	
-	public String getStringMano() {
+	public List<Carta> getMano() {
 		//Pre: Redefinition of the toString method.
 		//Post: Returns a string representation of the player.
-		return this.mano.toString();
+		return this.mano;
 	}
 	
-	public void recibirCarta(SCarta c) {
+	public void recibirCarta(Carta c) {
 		//Pre: Receive a Carta.
 		//Post: Adds the given card to the player's hand. 
 		this.mano.add(c);
 	}
-	public void eliminarCarta(SCarta c) {
+	public void eliminarCarta(Carta c) {
 		this.mano.remove(c);
 	}
 }

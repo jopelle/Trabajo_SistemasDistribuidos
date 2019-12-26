@@ -1,11 +1,13 @@
-package scartas;
 
-public class SCarta {
-	private SPalo sPalo;
+
+import java.io.Serializable;
+
+public class Carta implements Serializable {
+	private Palo Palo;
 	private int valor;
 	
-	public SCarta(SPalo p,int v) {
-		this.sPalo=p;
+	public Carta(Palo p,int v) {
+		this.Palo=p;
 		this.valor=v;
 	}
 	
@@ -13,8 +15,8 @@ public class SCarta {
 		return this.valor;
 	}
 	
-	public SPalo getPalo() {
-		return this.sPalo;
+	public Palo getPalo() {
+		return this.Palo;
 	}
 	
 	public String toString() {
@@ -31,13 +33,13 @@ public class SCarta {
 		else {
 			v=String.valueOf(this.valor);
 		}
-		return(v+" "+this.sPalo);
+		return(v+" "+this.Palo);
 	}
 	
 	public boolean equals(Object c) {
-		if(c instanceof SCarta) {
-			SCarta sCarta=(SCarta) c;
-			if(this.sPalo==sCarta.getPalo() && this.valor==sCarta.getValor()){
+		if(c instanceof Carta) {
+			Carta carta=(Carta) c;
+			if(this.Palo==carta.getPalo() && this.valor==carta.getValor()){
 				return true;
 			}
 			else {

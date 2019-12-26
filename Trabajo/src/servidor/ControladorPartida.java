@@ -1,21 +1,21 @@
-package principal;
-import scartas.*;
+package servidor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import cartas.Carta;
+import cartas.*;
 
 public class ControladorPartida {
-	private SMesa mesa;
-	private List<SJugador> players;
+	private Mesa mesa;
+	private List<Jugador> players;
 	private Baraja mazo;
 	public int turno;
 	private boolean gameOver;
 	
 	public ControladorPartida() {
-		this.mesa=new SMesa();
-		this.players=new ArrayList<SJugador>();
+		this.mesa=new Mesa();
+		this.players=new ArrayList<Jugador>();
 		this.mazo=new Baraja();
 		this.turno=0;
 		this.gameOver=false;
@@ -24,10 +24,10 @@ public class ControladorPartida {
 	public int numeroJugadores() {
 		return this.players.size();
 	}
-	public SJugador getJugador(int i) {
+	public Jugador getJugador(int i) {
 		return this.players.get(i);
 	}	
-	public void añadirJugador(SJugador j) {
+	public void añadirJugador(Jugador j) {
 		this.players.add(j);
 	}
 	
@@ -35,7 +35,7 @@ public class ControladorPartida {
 		//Pre:
 		//Post: Shuffles the deck, deals the cards among the players and assigns the initial turn.
 		this.mazo.shuffle();
-		SCarta c;
+		Carta c;
 		int p=this.players.size();
 		for(int j=0;j<6;j++) {
 			for(int k=0;k<p;k++) {
@@ -60,17 +60,14 @@ public class ControladorPartida {
 		return this.turno;
 	}
 	
-	public void mostrarMesa() {
-		this.mesa.showMesa();
+	public Mesa getMesa() {
+		return this.mesa;
 	}
-	public String getStringMesa() {
-		return this.mesa.toString();
-	}
-	public void colocarCarta(SCarta c) {
+	public void colocarCarta(Carta c) {
 		this.mesa.place(c);
 	}
 	
-	public SCarta robar() {
+	public Carta robar() {
 		return this.mazo.drawCard();
 	}
 	public boolean mazoVacio() {
