@@ -124,6 +124,10 @@ public class InterfazJuego {
 		return nombre.getText();
 	}
 	
+	public void setMensaje(String s) {
+		mensaje.setText(s);
+	}
+	
 	public void aniadirrCarta(Carta c) {
 		JButton botonCarta = new JButton(c.toString());
 		botonCarta.setEnabled(false);

@@ -15,7 +15,6 @@ public class Cliente extends Thread{
 	private Mesa mesa;
 	private List<Carta> mano;
 	private Socket socket;
-	private Scanner teclado;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	private InterfazJuego interfaz;
@@ -30,7 +29,6 @@ public class Cliente extends Thread{
 			this.socket=new Socket("localhost",6666);
 			this.oos = new ObjectOutputStream(this.socket.getOutputStream());
 			this.ois = new ObjectInputStream(this.socket.getInputStream());
-			this.teclado=new Scanner(System.in);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -52,12 +50,12 @@ public class Cliente extends Thread{
 			mensaje=this.recibirMensaje();
 			
 			if(mensaje.equals("actualizar")) {
+				this.actualizarTurno();
 				this.recibirMesa();
 			}
 			else if(mensaje.equals("mesa")) {
 				//Elegir una carta, si no se puede elegir (null), se roba y si tampoco se pasa
 				this.recibirMesa();
-				System.out.println("\r\nTu turno");
 				
 				Carta c=this.elegirCarta();
 				if(c==null) {
@@ -106,10 +104,21 @@ public class Cliente extends Thread{
 		}
 	}
 	
+	public void actualizarTurno() {
+		try{	
+			String s=(String)this.ois.readObject();
+			interfaz.setMensaje("Turno de "+s);
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void recibirMesa() {
 		try{	
 			this.mesa=(Mesa)this.ois.readObject();
-			this.mesa.showMesa();
 			interfaz.colocarMesa(this.mesa);
 
 		}catch(IOException e) {
@@ -127,7 +136,6 @@ public class Cliente extends Thread{
 			for(Carta c:this.mano) {
 				interfaz.aniadirrCarta(c);
 			}
-			System.out.println(this.mano);
 
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -137,8 +145,6 @@ public class Cliente extends Thread{
 	}
 	
 	public Carta elegirCarta() {
-		System.out.print("Tu mano: ");
-		System.out.println(this.mano.toString());
 		
 		List<Carta> colocables=new ArrayList<>();
 		for(int i=0;i<this.mano.size();i++) {
@@ -159,10 +165,6 @@ public class Cliente extends Thread{
 					e.printStackTrace();
 				}
 			}
-			/*System.out.print("Puedes colocar: ");
-			System.out.println(colocables.toString());
-			System.out.print("Elige una carta: ");
-			Carta c=colocables.get(this.teclado.nextInt());*/
 			Carta c=paraColocar;
 				
 			interfaz.descolocables();
@@ -200,7 +202,6 @@ public class Cliente extends Thread{
 			}
 			else {
 				Carta c=(Carta)ois.readObject();
-				System.out.println("Robada: "+c);
 
 				this.mano.add(c);
 				interfaz.aniadirrCarta(c);
@@ -219,8 +220,6 @@ public class Cliente extends Thread{
 		try {
 			String s="pasar";
 			oos.writeObject(s);
-
-			System.out.println("No puedes colocar,pasas turno");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -229,7 +228,6 @@ public class Cliente extends Thread{
 	public void fin() {
 		try {
 			String s=(String)ois.readObject();
-			System.out.println(s);
 			this.cerrarCosas();
 		}catch (IOException e) {
 			e.printStackTrace();
@@ -241,7 +239,6 @@ public class Cliente extends Thread{
 	
 	public void cerrarCosas() {
 		try {
-			this.teclado.close();
 			this.socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -47,7 +47,7 @@ public class Servidor extends Thread{
 			fin.await();
 			
 			interfaz.anadirLinea("SE ACABO");
-			interfaz.anadirLinea("El ganador es"+partida.getJugador(partida.getTurno()));
+			interfaz.anadirLinea("El ganador es "+partida.getJugador(partida.getTurno()).getNombre());
 			
 		}catch(IOException e) {e.printStackTrace();
 		}catch(InterruptedException e) {e.printStackTrace();}

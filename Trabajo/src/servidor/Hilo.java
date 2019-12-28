@@ -50,6 +50,8 @@ public class Hilo extends Thread{
 					}
 					s="actualizar";
 					oos.writeObject(s);
+					s=Servidor.partida.getJugador(Servidor.partida.turno).getNombre();
+					oos.writeObject(s);
 					oos.writeObject(Servidor.partida.getMesa());
 					oos.reset();
 				}
