@@ -56,13 +56,13 @@ public class Hilo extends Thread{
 				
 				//Si es su turno
 				if(this.turno==Servidor.partida.getTurno()) {
-					System.out.println("Turno: "+this.jugador.getNombre());
+					Servidor.interfaz.anadirLinea("Turno: "+this.jugador.getNombre());
 
 					//Envia la mesa
 					s="mesa";
 					oos.writeObject(s);
 					Mesa m=Servidor.partida.getMesa();
-					m.showMesa();
+					Servidor.showMesa();
 					oos.writeObject(m);
 					
 					//Robar o colocar
@@ -75,10 +75,10 @@ public class Hilo extends Thread{
 						else {
 							s="robando";
 							oos.writeObject(s);
-							System.out.print("Robando ");
+							Servidor.interfaz.anadirLinea("Robando:");
 							Carta robada=Servidor.partida.robar();
 							this.jugador.recibirCarta(robada);
-							System.out.println(robada);
+							Servidor.interfaz.anadirLinea("Robando: "+robada+"\r\n");
 							oos.writeObject(robada);
 							
 							s=(String)ois.readObject();

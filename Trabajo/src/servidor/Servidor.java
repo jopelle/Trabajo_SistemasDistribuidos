@@ -4,39 +4,40 @@ package servidor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
-public class Servidor {
-	public static ControladorPartida partida;
-	public static CountDownLatch count;
-	public static CountDownLatch fin;
+public class Servidor extends Thread{
+	protected static ControladorPartida partida;
+	protected static CountDownLatch count;
+	protected static CountDownLatch fin;
+	protected static InterfazServidor interfaz;
+	protected int nJugadores;
 	
-	public static void main(String[] args) {
-		Scanner in=new Scanner(System.in);
-		System.out.print("Introduce el numero de jugadres (n<6): ");
-		int n=in.nextInt();
-		System.out.println("");
-		
+	public Servidor(int n,InterfazServidor i) {
+		nJugadores=n;
+		interfaz=i;
+		partida= new ControladorPartida();
+		count=new CountDownLatch(n+1);
+		fin=new CountDownLatch(n);
+	}
+	
+	public void run() {
 		try (ServerSocket server=new ServerSocket(6666);){
-			partida= new ControladorPartida();
-			count=new CountDownLatch(n+1);
-			fin=new CountDownLatch(n);
 			
 			Jugador j;
 			
-			for(int i=0;i<n;i++) {
-				System.out.println("Esperando cliente (6666)");
+			interfaz.anadirLinea("Esperando clientes (6666)");
+			
+			for(int i=0;i<nJugadores;i++) {
 				Socket cliente=server.accept();
 				j=new Jugador();
 				partida.añadirJugador(j);
-				System.out.println("Se conecto un cliente");
+				interfaz.anadirLinea("Se conecto un cliente");
 				
 				Hilo hilo=new Hilo(cliente,j,i);
 				hilo.start();
 			}
+			interfaz.anadirLinea("");
 			
 			partida.repartir();
 			
@@ -45,10 +46,19 @@ public class Servidor {
 			
 			fin.await();
 			
-			System.out.println("SE ACABÓ");
+			interfaz.anadirLinea("SE ACABO");
+			interfaz.anadirLinea("El ganador es"+partida.getJugador(partida.getTurno()));
 			
-			in.close();
 		}catch(IOException e) {e.printStackTrace();
 		}catch(InterruptedException e) {e.printStackTrace();}
+	}
+	
+	public static void showMesa() {
+		interfaz.anadirLinea("Mesa: ");
+		interfaz.anadirLinea(""+partida.getMesa().getOros());
+		interfaz.anadirLinea(""+partida.getMesa().getBastos());
+		interfaz.anadirLinea(""+partida.getMesa().getCopas());
+		interfaz.anadirLinea(""+partida.getMesa().getEspadas());
+		interfaz.anadirLinea("");
 	}
 }

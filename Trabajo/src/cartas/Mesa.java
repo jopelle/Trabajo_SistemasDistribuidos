@@ -1,12 +1,13 @@
 package cartas;
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Mesa implements Serializable{
-	private java.util.Deque<Carta> oro;
-	private java.util.Deque<Carta> copa;
-	private java.util.Deque<Carta> espada;
-	private java.util.Deque<Carta> basto;
+	private Deque<Carta> oro;
+	private Deque<Carta> copa;
+	private Deque<Carta> espada;
+	private Deque<Carta> basto;
 	
 	public Mesa() {
 		//Pre: Constructor of Mesa.
@@ -19,58 +20,51 @@ public class Mesa implements Serializable{
 	public void place(Carta c) {
 		//Pre: Receives a Carta.
 		//Post: Places the given  card on the right place.
-		boolean yaEsta=false;
-		if(this.oro.contains(c)) {yaEsta=true;}
-		else if(this.copa.contains(c)) {yaEsta=true;}
-		else if(this.espada.contains(c)) {yaEsta=true;}
-		else if(this.basto.contains(c)) {yaEsta=true;}
-		else {yaEsta=false;}
-		if(yaEsta==false) {
-			if(c.getPalo()==Palo.Oros) {
-				if(c.getValor()==5) {
-					this.oro.add(c);
-				}
-				else if(this.oro.getLast()!=null && c.getValor()>this.oro.getLast().getValor()) {
-					this.oro.addLast(c);
-				}
-				else {
-					this.oro.addFirst(c);
-				}
+		if(c.getPalo()==Palo.Oros) {
+			if(c.getValor()==5) {
+				this.oro.add(c);
 			}
-			if(c.getPalo()==Palo.Bastos) {
-				if(c.getValor()==5) {
-					this.basto.add(c);
-				}
-				else if(this.basto.getLast()!=null && c.getValor()>this.basto.getLast().getValor()) {
-					this.basto.addLast(c);
-				}
-				else {
-					this.basto.addFirst(c);
-				}
+			else if(this.oro.getLast()!=null && c.getValor()>this.oro.getLast().getValor()) {
+				this.oro.addLast(c);
 			}
-			if(c.getPalo()==Palo.Espadas) {
-				if(c.getValor()==5) {
-					this.espada.add(c);
-				}
-				else if(this.espada.getLast()!=null && c.getValor()>this.espada.getLast().getValor()) {
-					this.espada.addLast(c);
-				}
-				else {
-					this.espada.addFirst(c);
-				}
-			}
-			if(c.getPalo()==Palo.Copas) {
-				if(c.getValor()==5) {
-					this.copa.add(c);
-				}
-				else if(this.copa.getLast()!=null && c.getValor()>this.copa.getLast().getValor()) {
-					this.copa.addLast(c);
-				}
-				else {
-					this.copa.addFirst(c);
-				}
+			else {
+				this.oro.addFirst(c);
 			}
 		}
+		if(c.getPalo()==Palo.Bastos) {
+			if(c.getValor()==5) {
+				this.basto.add(c);
+			}
+			else if(this.basto.getLast()!=null && c.getValor()>this.basto.getLast().getValor()) {
+				this.basto.addLast(c);
+			}
+			else {
+				this.basto.addFirst(c);
+			}
+		}
+		if(c.getPalo()==Palo.Espadas) {
+			if(c.getValor()==5) {
+				this.espada.add(c);
+			}
+			else if(this.espada.getLast()!=null && c.getValor()>this.espada.getLast().getValor()) {
+				this.espada.addLast(c);
+			}
+			else {
+				this.espada.addFirst(c);
+			}
+		}
+		if(c.getPalo()==Palo.Copas) {
+			if(c.getValor()==5) {
+				this.copa.add(c);
+			}
+			else if(this.copa.getLast()!=null && c.getValor()>this.copa.getLast().getValor()) {
+				this.copa.addLast(c);
+			}
+			else {
+				this.copa.addFirst(c);
+			}
+		}
+		
 	}
 	
 	public boolean placeable(Carta c) {
@@ -134,5 +128,21 @@ public class Mesa implements Serializable{
 		System.out.println(this.basto);
 		System.out.println(this.copa);
 		System.out.println(this.espada+"\n");
+	}
+	
+	public String getOros(){
+		return this.oro.toString();
+	}
+	
+	public String getBastos(){
+		return this.basto.toString();
+	}
+	
+	public String getCopas(){
+		return this.copa.toString();
+	}
+	
+	public String getEspadas(){
+		return this.espada.toString();
 	}
 }

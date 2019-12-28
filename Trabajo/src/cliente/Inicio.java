@@ -1,4 +1,4 @@
-package interfaz;
+package cliente;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
-public class inicio {
+public class Inicio {
 
 	private JFrame frame;
 	private JTextField nombre;
@@ -22,7 +22,7 @@ public class inicio {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					inicio window = new inicio();
+					Inicio window = new Inicio();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,7 @@ public class inicio {
 	/**
 	 * Create the application.
 	 */
-	public inicio() {
+	public Inicio() {
 		initialize();
 	}
 
@@ -63,8 +63,7 @@ public class inicio {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(nombre.getText()!=null && !nombre.getText().equals("")) {
-					//framePrueba framep=new framePrueba(nombre.getText());
-					frame.setVisible(false);
+					mostrarMesa();
 				}
 			}
 		});
@@ -80,5 +79,10 @@ public class inicio {
 		JLabel lblTuNombre = new JLabel("Tu nombre:");
 		lblTuNombre.setBounds(89, 293, 84, 14);
 		frame.getContentPane().add(lblTuNombre);
+	}
+	
+	public void mostrarMesa() {
+		InterfazJuego ic=new InterfazJuego(nombre.getText());
+		frame.dispose();
 	}
 }
