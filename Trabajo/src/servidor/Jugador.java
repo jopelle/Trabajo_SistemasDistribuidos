@@ -4,7 +4,7 @@ package servidor;
 import java.util.List;
 
 import cartas.Carta;
-
+/*Representa un jugador, formado por un nombre y su mano (lista de cartas)*/
 public class Jugador {
 	private List<Carta> mano;
 	private String nombre;

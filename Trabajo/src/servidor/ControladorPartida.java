@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import cartas.*;
 
+/*Controla los elementos básicos de la partida, crea el mazo reparte las cartas
+ * roba cartas del mazo, las coloca en mesa etc*/
 public class ControladorPartida {
 	private Mesa mesa;
 	private List<Jugador> players;

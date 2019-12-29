@@ -8,6 +8,7 @@ import java.net.Socket;
 import cartas.Carta;
 import cartas.Mesa;
 
+/*Se encarga de procesar la partida de un jugador y actualizar la interfaz del servidor*/
 public class Hilo extends Thread{
 	
 	private Socket socket;
@@ -28,7 +29,7 @@ public class Hilo extends Thread{
 			//Se da nombre al jugador
 			this.jugador.setNombre((String)ois.readObject());
 			
-			//Se espera a que todos los jugadores se hayan conectado			
+			/*Hasta que no se conecten todos los cliente y sse repartan las cartas la partida no comienza*/
 			Servidor.count.countDown();
 			Servidor.count.await();
 			
@@ -39,7 +40,9 @@ public class Hilo extends Thread{
 			s="Empieza "+Servidor.partida.getJugador(Servidor.partida.turno).getNombre();
 			oos.writeObject(s);
 			
-			//Turno
+			/*Se guaarda el primer turno y cada vez que el turno avance,
+			 * se envia la mesa al jugador para mantenerla actualizada a
+			 * los movimientos de cada jugador*/
 			int ultimoTurno=Servidor.partida.getTurno();
 
 			while(Servidor.partida.getGameOver()==false) {
@@ -52,10 +55,13 @@ public class Hilo extends Thread{
 					else {
 						ultimoTurno++;
 					}
+					//Se envia "actualizar" que indica que se va a enviar la mesa
 					s="actualizar";
 					oos.writeObject(s);
+					//Se envia el nombre del jugador al que le toca jugar
 					s=Servidor.partida.getJugador(Servidor.partida.turno).getNombre();
 					oos.writeObject(s);
+					//Se envia la mesa
 					oos.writeObject(Servidor.partida.getMesa());
 					oos.reset();
 				}
@@ -71,9 +77,12 @@ public class Hilo extends Thread{
 					Servidor.showMesa();
 					oos.writeObject(m);
 					
-					//Robar o colocar
+					/*Recibe un string, si es robar, se roba una carta y envia al cliente,
+					si es "colocar" recibe una carta y la coloca en la mesa*/
 					s=(String)ois.readObject();
 					if(s.equals("robar")) {
+						/*Si elmazo esta vacio se envia "vacio", si no se elimina una carta del mazo
+						 * y se envia "robando" y seguido la carta robada*/
 						if(Servidor.partida.mazoVacio()) {
 							s="vacio";
 							oos.writeObject(s);
@@ -81,12 +90,14 @@ public class Hilo extends Thread{
 						else {
 							s="robando";
 							oos.writeObject(s);
-							Servidor.interfaz.anadirLinea("Robando:");
 							Carta robada=Servidor.partida.robar();
 							this.jugador.recibirCarta(robada);
 							Servidor.interfaz.anadirLinea("Robando: "+robada+"\r\n");
 							oos.writeObject(robada);
 							
+							/*Tras enviar la carta al cliente, se recibe un string , si es "pasar"
+							 * significa que el cliente pasa turno (no puede colocar nada), si no es"pasar"
+							 * se recibirá una carta que se colocará en la mesa*/
 							s=(String)ois.readObject();
 							if(!s.equals("pasar")) {
 								this.colocar((Carta)ois.readObject());
@@ -123,6 +134,7 @@ public class Hilo extends Thread{
 		}
 	}
 
+	/*Se coloca la carta en la mesa y se elimina del mano del jugador*/
 	public void colocar(Carta c) {
 		Servidor.partida.colocarCarta(c);
 		this.jugador.eliminarCarta(c);

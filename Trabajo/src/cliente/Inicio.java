@@ -11,6 +11,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
+//ESTA ES LA CLASE CON EL MAIN DE CLIENTE
+/*Se trata de una interfaz donde se introduce el nombre del jugador y la ip
+ *  del servidor, si ambas son correctas el cliente se conecta al servidor y 
+ *  abre la interfaz de juego*/
 public class Inicio {
 
 	private JFrame frame;
@@ -97,6 +102,7 @@ public class Inicio {
 		servidor.setColumns(10);
 	}
 	
+	/*Al pulsar el boton ENTRAR se verifica si los datos son correctos*/
 	public void verificarDatos() {
 		if(nombre.getText()!=null && !nombre.getText().equals("")) {
 			String s=servidor.getText();
@@ -111,6 +117,7 @@ public class Inicio {
 		}
 	}
 	
+	/*Comprueba si la ip introducida es correcta*/
 	private boolean esIP(String ip) {
 		try {
 			if(ip==null) {
@@ -135,6 +142,7 @@ public class Inicio {
 		}	
 	}
 	
+	/*Cierra esta interfaz y abre la interfaz de juego*/
 	public void mostrarMesa() {
 		InterfazJuego ic=new InterfazJuego(nombre.getText(),servidor.getText());
 		frame.dispose();

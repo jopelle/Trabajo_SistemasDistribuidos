@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
+/*Representa la partida, formada por la mesa, la baraja y los jugadores,
+ * y va recibiendo ,enviando , y colocando cartas segun sea necesario*/
 public class Servidor extends Thread{
 	protected static ControladorPartida partida;
 	protected static CountDownLatch count;
@@ -21,6 +23,7 @@ public class Servidor extends Thread{
 		fin=new CountDownLatch(n);
 	}
 	
+	/*Espera a que se conecten el numero de clientes indicado,*/
 	public void run() {
 		try (ServerSocket server=new ServerSocket(6666);){
 			
@@ -38,12 +41,13 @@ public class Servidor extends Thread{
 				hilo.start();
 			}
 			interfaz.anadirLinea("");
-			
+			/*Hasta que no se conecten todos los cliente y sse repartn las cartas la partida no comienza*/
 			partida.repartir();
-			
+
 			count.countDown();
 			count.await();
 			
+			/*Cuando se acaba la partida se espera a que todos los hilos finalicen*/
 			fin.await();
 			
 			interfaz.anadirLinea("SE ACABO");
@@ -53,6 +57,7 @@ public class Servidor extends Thread{
 		}catch(InterruptedException e) {e.printStackTrace();}
 	}
 	
+	/*Muestra la mesa en la interfaz*/
 	public static void showMesa() {
 		interfaz.anadirLinea("Mesa: ");
 		interfaz.anadirLinea(""+partida.getMesa().getOros());

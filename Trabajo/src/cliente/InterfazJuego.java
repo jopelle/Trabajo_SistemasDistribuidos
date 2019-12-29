@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import cartas.Carta;
 import cartas.Mesa;
 
+/*Se trata de una interfaz  que permite jugar la partida*/
 public class InterfazJuego {
 
 	private Cliente cliente;
@@ -35,6 +36,7 @@ public class InterfazJuego {
 	/**
 	 * Create the application.
 	 */
+	/*Inicia la interfaz y crea el cliente con la ip dada*/
 	public InterfazJuego(String n,String ip) {
 		initialize();
 		nombre.setText(n);
@@ -120,14 +122,18 @@ public class InterfazJuego {
 		mano.setLayout(new GridLayout(2, 0, 0, 0));
 	}
 	
+	/*Devuelve el nombre del jugador mostrado en la interfaz*/
 	public String getNombre() {
 		return nombre.getText();
 	}
 	
+	/*Modifica el texto del cuadro de texto mensaje de la interfaz*/
 	public void setMensaje(String s) {
 		mensaje.setText(s);
 	}
 	
+	/*Añade cartas a la interfaz que se reprsentan por botones (por defecto estan deshabilitados), 
+	 * estos se asocian a las cartas con el Map cartasEnMano*/
 	public void aniadirrCarta(Carta c) {
 		JButton botonCarta = new JButton(c.toString());
 		botonCarta.setEnabled(false);
@@ -141,6 +147,8 @@ public class InterfazJuego {
 		mano.updateUI();
 	}
 	
+	/*La accion producida al clickar en una carta, se modifica la carta a colocar en el cliente
+	 * y se elimina la carta seleccionada de la interfaz */
 	public void elegirCarta(JButton jb) {
 		
 		cliente.setParaColocar(cartasEnMano.get(jb));
@@ -150,6 +158,7 @@ public class InterfazJuego {
 		mano.updateUI();
 	}
 	
+	/*Dibuja la mesa recibida*/
 	public void colocarMesa(Mesa m) {
 		this.bastos.setText(m.getBastos());
 		this.copas.setText(m.getCopas());
@@ -158,6 +167,7 @@ public class InterfazJuego {
 		
 	}
 	
+	/*Habilita un boton (Carta)*/
 	public void colocable(Carta c) {
 		for(JButton jb:cartasEnMano.keySet()) {
 			if(cartasEnMano.get(jb).equals(c)) {
@@ -166,6 +176,7 @@ public class InterfazJuego {
 		}
 	}
 	
+	/*Deshabilita todos los botones (Cartas)*/
 	public void descolocables() {
 		for(JButton jb:cartasEnMano.keySet()) {
 			jb.setEnabled(false);

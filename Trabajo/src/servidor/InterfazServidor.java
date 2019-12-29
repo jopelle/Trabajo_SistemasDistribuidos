@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 
 import servidor.Servidor;
 
+//ESTA ES LA CLASE CON EL MAIN DE SERVIDOR
+/*Se  trata de una interfaz que permite iniciar el sevidor y muestra el avance de la partida*/
 public class InterfazServidor {
 
 	private JFrame frame;
@@ -71,10 +73,6 @@ public class InterfazServidor {
 		botonIniciar.setBounds(474, 97, 89, 23);
 		frame.getContentPane().add(botonIniciar);
 		
-		JButton botonDetener = new JButton("Detener");
-		botonDetener.setBounds(520, 442, 89, 23);
-		frame.getContentPane().add(botonDetener);
-		
 		textJugadores = new JTextField();
 		textJugadores.setBounds(319, 98, 86, 20);
 		frame.getContentPane().add(textJugadores);
@@ -94,6 +92,9 @@ public class InterfazServidor {
 		frame.getContentPane().add(js);
 	}
 	
+	/*Es la accion del boton iniciar
+	 * Si el numero de jugadores es un numero y esta entre 2 y 6,
+	 * se inicia el servidor (Se crea el servidor, el cual crea el ServerSocket)*/
 	private void iniciarServidor() {
 		try {
 			int n;
@@ -114,6 +115,7 @@ public class InterfazServidor {
 		}	
 	}
 	
+	/*Añad s a la interfaz*/
 	public void anadirLinea(String s) {
 		this.txtaServidor.append(s+"\r\n");
 	}
