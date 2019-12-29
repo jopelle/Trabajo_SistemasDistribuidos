@@ -9,11 +9,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class Inicio {
 
 	private JFrame frame;
 	private JTextField nombre;
+	private JTextField servidor;
 
 	/**
 	 * Launch the application.
@@ -62,27 +64,79 @@ public class Inicio {
 		JButton btnNewButton = new JButton("ENTRAR");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nombre.getText()!=null && !nombre.getText().equals("")) {
-					mostrarMesa();
-				}
+				verificarDatos();
 			}
 		});
 		btnNewButton.setFont(new Font("Arial", Font.BOLD, 23));
-		btnNewButton.setBounds(183, 173, 163, 75);
+		btnNewButton.setBounds(183, 153, 163, 75);
 		frame.getContentPane().add(btnNewButton);
 		
 		nombre = new JTextField();
-		nombre.setBounds(183, 284, 163, 33);
+		nombre.setFont(new Font("Arial", Font.BOLD, 14));
+		nombre.setForeground(Color.BLUE);
+		nombre.setHorizontalAlignment(SwingConstants.CENTER);
+		nombre.setBounds(183, 304, 163, 33);
 		frame.getContentPane().add(nombre);
 		nombre.setColumns(10);
 		
 		JLabel lblTuNombre = new JLabel("Tu nombre:");
-		lblTuNombre.setBounds(89, 293, 84, 14);
+		lblTuNombre.setBounds(89, 313, 84, 14);
 		frame.getContentPane().add(lblTuNombre);
+		
+		JLabel lblServidor = new JLabel("Servidor:");
+		lblServidor.setBounds(89, 268, 46, 14);
+		frame.getContentPane().add(lblServidor);
+		
+		servidor = new JTextField();
+		servidor.setHorizontalAlignment(SwingConstants.CENTER);
+		servidor.setFont(new Font("Arial", Font.BOLD, 14));
+		servidor.setForeground(Color.BLUE);
+		servidor.setText("localhost");
+		servidor.setBounds(183, 252, 163, 33);
+		frame.getContentPane().add(servidor);
+		servidor.setColumns(10);
+	}
+	
+	public void verificarDatos() {
+		if(nombre.getText()!=null && !nombre.getText().equals("")) {
+			String s=servidor.getText();
+			if(s.equals("localhost")) {
+				mostrarMesa();
+			}
+			else {
+				if(esIP(s)) {
+					mostrarMesa();
+				}
+			}
+		}
+	}
+	
+	private boolean esIP(String ip) {
+		try {
+			if(ip==null) {
+				return false;
+			}
+			
+			String partes[]=ip.split("\\.");
+			if(partes.length !=4) {
+				return false;
+			}
+			
+			for(String s:partes) {
+				int i=Integer.parseInt(s);
+				if((i<0)||(i>255)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		catch(NumberFormatException e) {
+			return false;
+		}	
 	}
 	
 	public void mostrarMesa() {
-		InterfazJuego ic=new InterfazJuego(nombre.getText());
+		InterfazJuego ic=new InterfazJuego(nombre.getText(),servidor.getText());
 		frame.dispose();
 	}
 }

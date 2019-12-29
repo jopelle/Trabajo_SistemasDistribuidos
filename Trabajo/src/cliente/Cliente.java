@@ -20,13 +20,13 @@ public class Cliente extends Thread{
 	private InterfazJuego interfaz;
 	private Carta paraColocar;
 	
-	public Cliente(InterfazJuego ij){
+	public Cliente(InterfazJuego ij,String ip){
 		this.mesa=new Mesa();
 		this.mano=new ArrayList<>();
 		this.interfaz=ij;
 		this.paraColocar=null;
 		try{
-			this.socket=new Socket("localhost",6666);
+			this.socket=new Socket(ip,6666);
 			this.oos = new ObjectOutputStream(this.socket.getOutputStream());
 			this.ois = new ObjectInputStream(this.socket.getInputStream());
 		}catch(IOException e) {
@@ -43,6 +43,9 @@ public class Cliente extends Thread{
 		
 		//Recibe la mano
 		this.recibirMano();
+		
+		//Recibir turno inicial
+		interfaz.setMensaje(this.recibirMensaje());
 		
 		while(!fin) {
 			/*Recibe un mensaje, "continua" (tu turno), "actualizar"(se actualiza la mesa)
@@ -228,6 +231,7 @@ public class Cliente extends Thread{
 	public void fin() {
 		try {
 			String s=(String)ois.readObject();
+			interfaz.setMensaje(s);
 			this.cerrarCosas();
 		}catch (IOException e) {
 			e.printStackTrace();

@@ -35,6 +35,10 @@ public class Hilo extends Thread{
 			//Se envian las cartas al cliente
 			oos.writeObject(this.jugador.getMano());
 			
+			//Se envia el truno inicial
+			s="Empieza "+Servidor.partida.getJugador(Servidor.partida.turno).getNombre();
+			oos.writeObject(s);
+			
 			//Turno
 			int ultimoTurno=Servidor.partida.getTurno();
 

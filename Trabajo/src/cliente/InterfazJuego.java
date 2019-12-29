@@ -35,12 +35,12 @@ public class InterfazJuego {
 	/**
 	 * Create the application.
 	 */
-	public InterfazJuego(String n) {
+	public InterfazJuego(String n,String ip) {
 		initialize();
 		nombre.setText(n);
 		mensaje.setText("Esperando al resto");
 		cartasEnMano=new HashMap<>();
-		cliente=new Cliente(this);
+		cliente=new Cliente(this,ip);
 		cliente.start();
 		this.frame.setVisible(true);
 	}
